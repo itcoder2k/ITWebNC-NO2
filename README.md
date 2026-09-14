@@ -1,7 +1,7 @@
 # Báo Cáo Dự Án: Thiết Kế Web Nâng Cao
 
 ## 1. Thông tin Nhóm sinh viên
-- **Link Github Repo:** `[Điền link Github của nhóm vào đây]`
+- **Link Github Repo:** `https://github.com/itcoder2k/ITWebNC-NO2`
 - **Giảng viên hướng dẫn:** @lethunguyen
 
 **Danh sách thành viên & Phân công nhiệm vụ:**
