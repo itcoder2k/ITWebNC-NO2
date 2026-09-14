@@ -2,7 +2,7 @@
 
 ## 1. Thông tin Nhóm sinh viên
 - **Link Github Repo:** `https://github.com/itcoder2k/ITWebNC-NO2`
-- **Giảng viên hướng dẫn:** @lethunguyen
+- **Giảng viên hướng dẫn:** Nguyễn Lệ Thu
 
 **Danh sách thành viên & Phân công nhiệm vụ:**
 1. **Nguyễn Trọng Hùng** - `23010083` 
