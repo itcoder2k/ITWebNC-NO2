@@ -5,6 +5,7 @@ import { AppController } from './app.controller.js';
 import { AppService } from './app.service.js';
 import { AssetModule } from './asset/asset.module.js';
 import { CategoryModule } from './category/category.module.js';
+import { UserModule } from './user/user.module.js';
 
 @Module({
   imports: [
@@ -28,7 +29,8 @@ import { CategoryModule } from './category/category.module.js';
       }),
     }),
     AssetModule,
-    CategoryModule, 
+    CategoryModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],
