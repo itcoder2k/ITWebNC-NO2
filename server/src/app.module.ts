@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller.js';
 import { AppService } from './app.service.js';
 import { AssetModule } from './asset/asset.module.js';
+import { CategoryModule } from './category/category.module.js';
 
 @Module({
   imports: [
@@ -15,18 +16,19 @@ import { AssetModule } from './asset/asset.module.js';
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
         type: 'mysql',
-        host: configService.get<string>('DB_HOST', 'localhost'),
-        port: Number(configService.get<number>('DB_PORT', 3306)),
-        username: configService.get<string>('DB_USERNAME', 'root'),
-        password: configService.get<string>('DB_PASSWORD', ''),
+        host: configService.get('DB_HOST', 'localhost'),
+        port: Number(configService.get('DB_PORT', 3306)),
+        username: configService.get('DB_USERNAME', 'root'),
+        password: configService.get('DB_PASSWORD', ''),
         database:
-          configService.get<string>('DB_DATABASE') ??
-          configService.get<string>('DB_NAME', 'GameAssetDB'),
+          configService.get('DB_DATABASE') ??
+          configService.get('DB_NAME', 'GameAssetDB'),
         autoLoadEntities: true,
         synchronize: false,
       }),
     }),
     AssetModule,
+    CategoryModule, 
   ],
   controllers: [AppController],
   providers: [AppService],
