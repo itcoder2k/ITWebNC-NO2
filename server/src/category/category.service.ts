@@ -9,19 +9,19 @@ import { UpdateCategoryDto } from './dto/update-category.dto.js';
 export class CategoryService {
   constructor(
     @InjectRepository(Category)
-    private readonly categoryRepository: Repository,
+    private readonly categoryRepository: Repository<Category>,
   ) {}
 
-  async create(createCategoryDto: CreateCategoryDto): Promise {
+  async create(createCategoryDto: CreateCategoryDto): Promise<Category> {
     const category = this.categoryRepository.create(createCategoryDto);
     return await this.categoryRepository.save(category);
   }
 
-  async findAll(): Promise {
+  async findAll(): Promise<Category[]> {
     return await this.categoryRepository.find();
   }
 
-  async findOne(id: number): Promise {
+  async findOne(id: number): Promise<Category> {
     const category = await this.categoryRepository.findOne({
       where: { category_id: id },
     });
@@ -31,7 +31,7 @@ export class CategoryService {
     return category;
   }
 
-  async update(id: number, updateCategoryDto: UpdateCategoryDto): Promise {
+  async update(id: number, updateCategoryDto: UpdateCategoryDto): Promise<Category> {
     const category = await this.findOne(id);
     Object.assign(category, updateCategoryDto);
     return await this.categoryRepository.save(category);

@@ -5,16 +5,13 @@ import { AppModule } from './app.module.js';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // Kích hoạt CORS để frontend React kết nối được
   app.enableCors({
     origin: ['http://localhost:3000', 'http://127.0.0.1:3000'],
     credentials: true,
   });
 
-  // Đặt tiền tố API: http://localhost:5000/api/...
   app.setGlobalPrefix('api');
 
-  // Kiểm tra và lọc dữ liệu DTO đầu vào
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
