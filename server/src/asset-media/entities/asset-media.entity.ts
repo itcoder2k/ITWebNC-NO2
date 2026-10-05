@@ -9,7 +9,7 @@ export class AssetMedia {
     @PrimaryGeneratedColumn()
     media_id: number;
 
-    @Column({ type: 'int' })
+    @Column()
     asset_id: number;
 
     @Column({ length: 255 })
@@ -18,10 +18,9 @@ export class AssetMedia {
     @Column({
         type: 'enum',
         enum: ['image', 'gif', 'video'],
-        default: 'image',
     })
     media_type: string;
 
-    @Column({ type: 'int', default: 0 })
+    @Column()
     display_order: number;
 }
