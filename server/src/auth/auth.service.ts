@@ -13,12 +13,6 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  /**
-   * Bước 1: Kiểm tra tài khoản (được LocalStrategy gọi).
-   * - Tìm user theo username
-   * - So sánh mật khẩu thô với password_hash bằng bcrypt.compare
-   * - Trả về user (bỏ password_hash) nếu đúng, null nếu sai
-   */
   async validateUser(
     username: string,
     password: string,
@@ -34,10 +28,6 @@ export class AuthService {
     return result;
   }
 
-  /**
-   * Bước 2: Cấp token. Tạo payload và gọi JwtService.sign() để sinh accessToken.
-   * `sub` là chuẩn JWT cho "subject" (id người dùng).
-   */
   login(user: SafeUser) {
     const payload = {
       sub: user.user_id,

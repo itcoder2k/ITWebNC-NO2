@@ -18,7 +18,6 @@ import { UserRole } from '../user/entities/user.entity.js';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  // POST /api/auth/login  body: { username, password }
   @UseGuards(LocalAuthGuard)
   @Post('login')
   @HttpCode(HttpStatus.OK)
@@ -26,14 +25,12 @@ export class AuthController {
     return this.authService.login(req.user);
   }
 
-  // GET /api/auth/profile - Yêu cầu Bearer Token (JwtAuthGuard)
   @UseGuards(JwtAuthGuard)
   @Get('profile')
   getProfile(@Request() req: { user: { user_id: number; username: string; role: UserRole } }) {
     return req.user;
   }
 
-  // GET /api/auth/admin-only - Yêu cầu Bearer Token & quyền ADMIN (RolesGuard)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ADMIN)
   @Get('admin-only')
@@ -43,4 +40,3 @@ export class AuthController {
     };
   }
 }
-

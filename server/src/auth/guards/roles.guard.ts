@@ -13,7 +13,6 @@ export class RolesGuard implements CanActivate {
       context.getClass(),
     ]);
 
-    // Nếu endpoint không khai báo @Roles(), cho phép đi tiếp
     if (!requiredRoles || requiredRoles.length === 0) {
       return true;
     }

@@ -22,10 +22,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  /**
-   * Sau khi Passport xác thực tính hợp lệ của token và hạn dùng,
-   * hàm validate sẽ giải mã payload và gán kết quả vào `req.user`.
-   */
   async validate(payload: JwtPayload) {
     return {
       user_id: payload.sub,
