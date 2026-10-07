@@ -7,6 +7,8 @@ import {
   Delete,
   Put,
   ParseIntPipe,
+  HttpCode,
+  HttpStatus,
 } from '@nestjs/common';
 import { UserService } from './user.service.js';
 import { CreateUserDto } from './dto/create-user.dto.js';
@@ -18,17 +20,22 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post()
-  create(@Body() createUserDto: CreateUserDto): Promise<User> {
+  @HttpCode(HttpStatus.CREATED)
+  create(
+    @Body() createUserDto: CreateUserDto,
+  ): Promise<Omit<User, 'password_hash'>> {
     return this.userService.create(createUserDto);
   }
 
   @Get()
-  findAll(): Promise<User[]> {
+  findAll(): Promise<Omit<User, 'password_hash'>[]> {
     return this.userService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: number): Promise<User> {
+  findOne(
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<Omit<User, 'password_hash'>> {
     return this.userService.findOne(id);
   }
 
@@ -36,12 +43,14 @@ export class UserController {
   update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateUserDto: UpdateUserDto,
-  ): Promise<User> {
+  ): Promise<Omit<User, 'password_hash'>> {
     return this.userService.update(id, updateUserDto);
   }
 
   @Delete(':id')
-  remove(@Param('id', ParseIntPipe) id: number): Promise<{ message: string }> {
+  remove(
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<{ message: string }> {
     return this.userService.remove(id);
   }
 }
