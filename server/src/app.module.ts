@@ -6,6 +6,7 @@ import { DatabaseModule } from './database/database.module.js';
 import { AssetModule } from './asset/asset.module.js';
 import { CategoryModule } from './category/category.module.js';
 import { UserModule } from './user/user.module.js';
+import { AuthModule } from './auth/auth.module.js';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { UserModule } from './user/user.module.js';
     AssetModule,
     CategoryModule,
     UserModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
