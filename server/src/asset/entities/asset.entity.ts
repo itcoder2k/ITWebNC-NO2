@@ -14,7 +14,7 @@ export class Asset {
   @Column({ length: 150 })
   title: string;
 
-  @Column({ length: 255, nullable: true })
+  @Column({ type: 'varchar', length: 255, nullable: true })
   short_description: string | null;
 
   @Column({ type: 'text', nullable: true })
@@ -23,7 +23,7 @@ export class Asset {
   @Column({ type: 'decimal', precision: 10, scale: 2, default: 0 })
   price: number;
 
-  @Column({ length: 255, nullable: true })
+  @Column({ type: 'varchar', length: 255, nullable: true })
   thumbnail_url: string | null;
 
   @Column({ length: 255 })
