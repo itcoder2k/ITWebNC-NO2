@@ -1,7 +1,7 @@
 # BÁO CÁO DỰ ÁN MÔN HỌC: THIẾT KẾ WEB NÂNG CAO
 # ĐỀ TÀI: SÀN GIAO DỊCH TÀI NGUYÊN TRÒ CHƠI TRỰC TUYẾN (GAME ASSET MARKETPLACE)
 > **Mục tiêu sản phẩm:** Xây dựng sàn thương mại điện tử chuyên biệt quản lý, phân phối và giao dịch tài nguyên kỹ thuật số phục vụ phát triển game (Digital Game Assets).  
-> **Kiến trúc phát triển phần mềm:** **Kiến trúc phân lớp (Layered Architecture / N-Tier Architecture)** theo chuẩn bài giảng học phần *Thiết Kế Web Nâng Cao* (Lec3 - GV. Nguyễn Lệ Thu).
+> **Kiến trúc phát triển phần mềm:** **Kiến trúc phân lớp (Layered Architecture / N-Tier Architecture)** 
 
 ---
 
@@ -247,16 +247,16 @@ sequenceDiagram
     P-->>S: Asset Entity
     
     Note over S: Kiểm tra nghiệp vụ định giá linh hoạt (PWYW):
-    Note over S: 1. Số tiền trả ($12) >= Giá sàn ($5) => HỢP LỆ
-    Note over S: 2. Số dư ví ($20) >= Số tiền trả ($12) => HỢP LỆ
+    Note over S: 1. Số tiền trả ($12) >= Giá sàn tối thiểu ($5) -> HỢP LỆ!
+    Note over S: 2. Số dư ví ($20) >= Số tiền trả ($12) -> HỢP LỆ!
     Note over S: Mở Database Transaction (ACID)
     
     S->>P: Trừ $12 ví người mua & Cộng tiền ví tác giả (Creator)
-    P->>DB: UPDATE Users SET balance = balance - 12 WHERE user_id = buyerId
-    P->>DB: UPDATE Users SET balance = balance + 12 WHERE user_id = uploaderId
+    P->>DB: UPDATE Users SET balance = balance - 12 WHERE user_id = buyerId;
+    P->>DB: UPDATE Users SET balance = balance + 12 WHERE user_id = uploaderId;
     
     S->>P: Lưu hóa đơn Order (total = $12) & OrderDetail (asset_id = 10, price = $12)
-    P->>DB: INSERT INTO Orders và OrderDetails
+    P->>DB: INSERT INTO Orders ... ; INSERT INTO OrderDetails ...
     DB-->>P: Ghi nhận thành công
     P-->>S: Order Entity (status = 'completed')
     
@@ -634,26 +634,3 @@ Có 2 cách khởi tạo cực kỳ đơn giản:
 
 ---
 
-## 8. QUY CHUẨN COMMIT THEO YÊU CẦU MÔN HỌC
-
-Để đảm bảo việc chấm điểm quá trình của Giảng viên diễn ra thuận lợi, các thành viên trong nhóm thực hiện quy chuẩn commit lên GitHub như sau:
-
-* **Tạo Entity (Nhiệm vụ 2.1):** Commit với thông điệp:
-  ```bash
-  git add .
-  git commit -m "Tạo Entity"
-  git push origin main
-  ```
-* **Chức năng kết nối CSDL (Nhiệm vụ 2.2):** Làm chung cả nhóm và đóng gói trong `DatabaseModule`.
-* **Chức năng CRUD đối tượng (Nhiệm vụ 2.3):** Mỗi thành viên commit chức năng mình phụ trách:
-  ```bash
-  git add .
-  git commit -m "chức năng User"       # Nhóm trưởng Nguyễn Trọng Hùng
-  git commit -m "chức năng Category"   # Thành viên Nguyễn Mạnh Thắng
-  git commit -m "chức năng Tag"        # Thành viên Nguyễn Hữu Hưng
-  git commit -m "chức năng Asset"      # Thành viên Vũ Quốc Toản
-  git push origin main
-  ```
-
----
-*Bản quyền báo cáo thuộc về Nhóm 2 - Lớp Thiết kế Web Nâng Cao - Giảng viên: Nguyễn Lệ Thu - Phenikaa University.*
