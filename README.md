@@ -247,16 +247,16 @@ sequenceDiagram
     P-->>S: Asset Entity
     
     Note over S: Kiểm tra nghiệp vụ định giá linh hoạt (PWYW):
-    Note over S: 1. Số tiền trả ($12) >= Giá sàn tối thiểu ($5) -> HỢP LỆ!
-    Note over S: 2. Số dư ví ($20) >= Số tiền trả ($12) -> HỢP LỆ!
+    Note over S: 1. Số tiền trả ($12) >= Giá sàn ($5) => HỢP LỆ
+    Note over S: 2. Số dư ví ($20) >= Số tiền trả ($12) => HỢP LỆ
     Note over S: Mở Database Transaction (ACID)
     
     S->>P: Trừ $12 ví người mua & Cộng tiền ví tác giả (Creator)
-    P->>DB: UPDATE Users SET balance = balance - 12 WHERE user_id = buyerId;
-    P->>DB: UPDATE Users SET balance = balance + 12 WHERE user_id = uploaderId;
+    P->>DB: UPDATE Users SET balance = balance - 12 WHERE user_id = buyerId
+    P->>DB: UPDATE Users SET balance = balance + 12 WHERE user_id = uploaderId
     
     S->>P: Lưu hóa đơn Order (total = $12) & OrderDetail (asset_id = 10, price = $12)
-    P->>DB: INSERT INTO Orders ... ; INSERT INTO OrderDetails ...
+    P->>DB: INSERT INTO Orders và OrderDetails
     DB-->>P: Ghi nhận thành công
     P-->>S: Order Entity (status = 'completed')
     
