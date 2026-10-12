@@ -196,6 +196,29 @@ describe('UserService', () => {
     });
   });
 
+  describe('deposit', () => {
+    it('should add amount to user balance and return sanitized user', async () => {
+      const existingUser = {
+        user_id: 1,
+        username: 'testuser',
+        balance: '45.00',
+        password_hash: 'secret_hash',
+      };
+      mockRepository.findOne.mockResolvedValue(existingUser);
+      mockRepository.save.mockImplementation(async (u: any) => u);
+
+      const result = await service.deposit(1, 25.5);
+      expect(result.balance).toBe(70.5);
+      expect((result as any).password_hash).toBeUndefined();
+      expect(mockRepository.save).toHaveBeenCalled();
+    });
+
+    it('should throw NotFoundException if user does not exist when depositing', async () => {
+      mockRepository.findOne.mockResolvedValue(null);
+      await expect(service.deposit(999, 50)).rejects.toThrow(NotFoundException);
+    });
+  });
+
   describe('remove', () => {
     it('should delete user and return success message', async () => {
       const existingUser = { user_id: 1, username: 'testuser' };
@@ -207,3 +230,4 @@ describe('UserService', () => {
     });
   });
 });
+

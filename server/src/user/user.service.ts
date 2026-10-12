@@ -1,7 +1,10 @@
 import {
   Injectable,
+  Inject,
+  Optional,
   NotFoundException,
   ConflictException,
+  BadRequestException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -13,11 +16,17 @@ import { UpdateUserDto } from './dto/update-user.dto.js';
 @Injectable()
 export class UserService {
   private readonly saltRounds = 10;
+  private readonly userRepository: Repository<User>;
 
   constructor(
     @InjectRepository(User)
-    private readonly userRepository: Repository<User>,
-  ) { }
+    typeormUserRepo: Repository<User>,
+    @Optional()
+    @Inject('USER_REPOSITORY')
+    customUserRepo?: Repository<User>,
+  ) {
+    this.userRepository = typeormUserRepo ?? customUserRepo!;
+  }
 
   async create(createUserDto: CreateUserDto): Promise<Omit<User, 'password_hash'>> {
     const { username, email, password, ...rest } = createUserDto;
@@ -112,6 +121,28 @@ export class UserService {
     return this.sanitizeUser(updatedUser);
   }
 
+  async deposit(
+    id: number,
+    amount: number,
+  ): Promise<Omit<User, 'password_hash'>> {
+    if (typeof amount !== 'number' || Number.isNaN(amount) || amount <= 0) {
+      throw new BadRequestException('Số tiền nạp phải lớn hơn 0');
+    }
+
+    const user = await this.userRepository.findOne({
+      where: { user_id: id },
+    });
+    if (!user) {
+      throw new NotFoundException(`Không tìm thấy người dùng với ID ${id}`);
+    }
+
+    const currentBalance = Number(user.balance) || 0;
+    user.balance = Number((currentBalance + Number(amount)).toFixed(2));
+
+    const updatedUser = await this.userRepository.save(user);
+    return this.sanitizeUser(updatedUser);
+  }
+
   async remove(id: number): Promise<{ message: string }> {
     const user = await this.userRepository.findOne({
       where: { user_id: id },
@@ -129,3 +160,4 @@ export class UserService {
     return sanitized;
   }
 }
+

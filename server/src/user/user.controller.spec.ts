@@ -13,6 +13,7 @@ describe('UserController', () => {
       findAll: vi.fn(),
       findOne: vi.fn(),
       update: vi.fn(),
+      deposit: vi.fn(),
       remove: vi.fn(),
     };
 
@@ -90,6 +91,18 @@ describe('UserController', () => {
     });
   });
 
+  describe('deposit', () => {
+    it('should deposit funds to user wallet', async () => {
+      const depositDto = { amount: 50 };
+      const expected = { user_id: 1, username: 'john', balance: 95 };
+      mockUserService.deposit.mockResolvedValue(expected);
+
+      const result = await controller.deposit(1, depositDto);
+      expect(mockUserService.deposit).toHaveBeenCalledWith(1, 50);
+      expect(result).toEqual(expected);
+    });
+  });
+
   describe('remove', () => {
     it('should remove user and return message', async () => {
       const expected = { message: 'Đã xóa người dùng với ID 1 thành công' };
@@ -101,3 +114,4 @@ describe('UserController', () => {
     });
   });
 });
+
