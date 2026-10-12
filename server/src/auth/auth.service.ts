@@ -3,6 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import bcrypt from 'bcrypt';
 import { UserService } from '../user/user.service.js';
 import { User } from '../user/entities/user.entity.js';
+import { CreateUserDto } from '../user/dto/create-user.dto.js';
 
 export type SafeUser = Omit<User, 'password_hash'>;
 
@@ -14,10 +15,13 @@ export class AuthService {
   ) {}
 
   async validateUser(
-    username: string,
+    usernameOrEmail: string,
     password: string,
   ): Promise<SafeUser | null> {
-    const user = await this.userService.findByUsername(username);
+    let user = await this.userService.findByUsername(usernameOrEmail);
+    if (!user && usernameOrEmail.includes('@')) {
+      user = await this.userService.findByEmail(usernameOrEmail);
+    }
     if (!user) return null;
 
     const isMatch = await bcrypt.compare(password, user.password_hash);
@@ -39,4 +43,14 @@ export class AuthService {
       user,
     };
   }
+
+  async register(createUserDto: CreateUserDto) {
+    const user = await this.userService.create(createUserDto);
+    return this.login(user);
+  }
+
+  async getProfile(userId: number): Promise<SafeUser> {
+    return this.userService.findOne(userId);
+  }
 }
+

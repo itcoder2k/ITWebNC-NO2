@@ -1,4 +1,5 @@
 import {
+  Body,
   Controller,
   Get,
   HttpCode,
@@ -13,10 +14,17 @@ import { JwtAuthGuard } from './guards/jwt-auth.guard.js';
 import { RolesGuard } from './guards/roles.guard.js';
 import { Roles } from './decorators/roles.decorator.js';
 import { UserRole } from '../user/entities/user.entity.js';
+import { CreateUserDto } from '../user/dto/create-user.dto.js';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
+
+  @Post('register')
+  @HttpCode(HttpStatus.CREATED)
+  register(@Body() createUserDto: CreateUserDto) {
+    return this.authService.register(createUserDto);
+  }
 
   @UseGuards(LocalAuthGuard)
   @Post('login')
@@ -27,8 +35,10 @@ export class AuthController {
 
   @UseGuards(JwtAuthGuard)
   @Get('profile')
-  getProfile(@Request() req: { user: { user_id: number; username: string; role: UserRole } }) {
-    return req.user;
+  getProfile(
+    @Request() req: { user: { user_id: number; username: string; role: UserRole } },
+  ) {
+    return this.authService.getProfile(req.user.user_id);
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)
@@ -40,3 +50,4 @@ export class AuthController {
     };
   }
 }
+
