@@ -1,6 +1,6 @@
 # BÁO CÁO DỰ ÁN MÔN HỌC: THIẾT KẾ WEB NÂNG CAO
 # ĐỀ TÀI: SÀN GIAO DỊCH TÀI NGUYÊN TRÒ CHƠI TRỰC TUYẾN (GAME ASSET MARKETPLACE)
-> **Nền tảng mô phỏng tham chiếu:** Chuyên mục Game Assets của **itch.io** (`itch.io/game-assets`).  
+> **Mục tiêu sản phẩm:** Xây dựng sàn thương mại điện tử chuyên biệt quản lý, phân phối và giao dịch tài nguyên kỹ thuật số phục vụ phát triển game (Digital Game Assets).  
 > **Kiến trúc phát triển phần mềm:** **Kiến trúc phân lớp (Layered Architecture / N-Tier Architecture)** theo chuẩn bài giảng học phần *Thiết Kế Web Nâng Cao* (Lec3 - GV. Nguyễn Lệ Thu).
 
 ---
@@ -18,33 +18,33 @@ Theo yêu cầu đồ án, mỗi sinh viên trong nhóm chịu trách nhiệm đ
 
 | STT | Họ và tên | Mã sinh viên | Vai trò | Đối tượng phụ trách chính | Các lớp triển khai theo Kiến trúc Phân lớp |
 | :---: | :--- | :---: | :---: | :--- | :--- |
-| 1 | **Nguyễn Trọng Hùng** | `23010083` | **Nhóm trưởng** | **`User`** (Người dùng & Ví tiền)<br>& **`Auth`** (Xác thực bảo mật) | • **Presentation:** `user.controller.ts`, `auth.controller.ts`<br>• **Business Logic:** `user.service.ts`, `auth.service.ts`<br>• **Data Access:** `user.provider.ts` (Inject `DATA_SOURCE`)<br>• **Entity/Model:** `user.entity.ts`<br>• **DTO:** `create-user.dto.ts`, `update-user.dto.ts`, `login.dto.ts` |
+| 1 | **Nguyễn Trọng Hùng** | `23010083` | **Nhóm trưởng** | **`User`** (Người dùng & Ví tiền)<br>& **`Auth`** (Xác thực bảo mật) | • **Presentation:** `user.controller.ts`, `auth.controller.ts`<br>• **Business Logic:** `user.service.ts`, `auth.service.ts`<br>• **Data Access:** `user.provider.ts` (Inject `DATA_SOURCE`)<br>• **Entity/Model:** `user.entity.ts`<br>• **DTO:** `create-user.dto.ts`, `update-user.dto.ts`, `deposit.dto.ts`, `login.dto.ts` |
 | 2 | **Nguyễn Hữu Hưng** | `23010124` | **Thành viên** | **`Tag`** (Thẻ gắn đa tiêu chí)<br>& **`AssetMedia`** (Demo Gallery) | • **Presentation:** `tag.controller.ts`<br>• **Business Logic:** `tag.service.ts`<br>• **Data Access:** `tag.provider.ts`, `asset-media.provider.ts`<br>• **Entity/Model:** `tag.entity.ts`, `asset-media.entity.ts`, `asset-tags.entity.ts`<br>• **DTO:** `create-tag.dto.ts`, `add-media.dto.ts` |
 | 3 | **Nguyễn Mạnh Thắng** | `23010098` | **Thành viên** | **`Category`** (Danh mục phân loại)<br>& **`Database`** (Cấu hình CSDL chung) | • **Presentation:** `category.controller.ts`<br>• **Business Logic:** `category.service.ts`<br>• **Data Access:** `category.provider.ts`, `database.providers.ts`<br>• **Entity/Model:** `category.entity.ts`<br>• **DTO:** `create-category.dto.ts`, `update-category.dto.ts`<br>• **Database Module:** Quản lý kết nối TypeORM MySQL |
 | 4 | **Vũ Quốc Toản** | `23010003` | **Thành viên** | **`Asset`** (Tài nguyên Game),<br>**`Order`** (Đơn hàng) & **`Review`** | • **Presentation:** `asset.controller.ts`, `order.controller.ts`, `review.controller.ts`<br>• **Business Logic:** `asset.service.ts`, `order.service.ts`, `review.service.ts`<br>• **Data Access:** `asset.provider.ts`, `order.provider.ts`, `review.provider.ts`<br>• **Entity/Model:** `asset.entity.ts`, `order.entity.ts`, `order-detail.entity.ts`, `review.entity.ts`<br>• **DTO:** `create-asset.dto.ts`, `checkout.dto.ts`, `create-review.dto.ts` |
 
 ---
 
-## 2. PHÂN TÍCH ĐẶC TẢ HỆ SINH THÁI MÔ PHỎNG ITCH.IO
+## 2. PHÂN TÍCH ĐẶC TẢ HỆ THỐNG SÀN GIAO DỊCH TÀI NGUYÊN GAME
 
-itch.io là nền tảng phân phối game độc lập và tài nguyên số (Indie Game Assets) lớn và tự do nhất hiện nay. Để mô phỏng chân thực và đầy đủ hệ sinh thái **itch.io/game-assets**, dự án phân tích và tích hợp các đặc trưng độc bản sau:
+Dự án là nền tảng thương mại điện tử C2C kết hợp B2C chuyên biệt cho việc quản lý, phân phối và giao dịch tài nguyên kỹ thuật số phục vụ phát triển game (Indie Game Assets: 2D Sprites, 3D Models, Âm thanh & SFX, Game UI, VFX). Hệ thống được thiết kế và xây dựng với các đặc trưng nghiệp vụ cốt lõi sau:
 
-### 2.1. Các đặc trưng cốt lõi mô phỏng itch.io (Core itch.io Features)
+### 2.1. Các đặc trưng nghiệp vụ cốt lõi (Core System Features)
 
-1. **Hệ thống Định giá linh hoạt "Pay What You Want" (PWYW / Ủng hộ tác giả):**
-   - Trên itch.io, Creator thiết lập một mức **giá sàn tối thiểu (Minimum Price)**: có thể là miễn phí ($0.00) hoặc có phí (ví dụ $5.00).
-   - Khi thanh toán, người mua có quyền nhập số tiền lớn hơn giá sàn (ví dụ trả $10.00 thay vì $5.00) để donate, khích lệ tinh thần nghệ sĩ indie.
+1. **Hệ thống Định giá linh hoạt "Pay What You Want" (PWYW / Trả giá tùy tâm & Ủng hộ tác giả):**
+   - Tác giả (Creator) thiết lập một mức **giá sàn tối thiểu (Minimum Price)**: có thể là miễn phí ($0.00) hoặc có phí (ví dụ $5.00).
+   - Khi thanh toán, người mua có quyền nhập số tiền lớn hơn giá sàn (ví dụ trả $10.00 thay vì $5.00) để donate, khích lệ tinh thần người sáng tạo.
 2. **Trải nghiệm Demo đa phương tiện (Rich Media Preview Gallery):**
-   - Khác với e-commerce thông thường chỉ có ảnh tĩnh, sàn game asset đòi hỏi:
+   - Khác với e-commerce thông thường chỉ có ảnh tĩnh, sàn game asset hỗ trợ trải nghiệm đa phương tiện:
      - **Sprite Sheet & Ảnh động GIF:** Cho phép xem trước chuyển động hoạt họa của nhân vật (Walk, Run, Attack, Jump) ngay trên nền tảng.
      - **Audio Player tích hợp:** Nghe thử các tệp hiệu ứng âm thanh (SFX) hoặc nhạc nền (BGM) trực tiếp mà không cần tải file về máy.
-3. **Cơ chế Thẻ gắn đa chiều (itch.io Multi-Dimensional Tag Engine):**
-   - itch.io không giới hạn sản phẩm trong 1 danh mục cứng nhắc mà kết hợp ma trận tags lọc chéo:
+3. **Cơ chế Thẻ gắn đa chiều (Multi-Dimensional Tag Engine):**
+   - Hệ thống không giới hạn sản phẩm trong 1 danh mục cứng nhắc mà kết hợp ma trận tags lọc chéo linh hoạt:
      - *Phong cách nghệ thuật (Art Style):* `#pixel-art`, `#low-poly`, `#voxel`, `#vector`, `#retro-16bit`.
      - *Góc nhìn game (Perspective):* `#top-down`, `#side-scroller`, `#isometric`, `#first-person`.
      - *Định dạng & Trạng thái:* `#animated`, `#tileset`, `#seamless-texture`, `#looping-audio`.
 4. **Hệ thống Giấy phép Bản quyền Game (Game Asset Licensing):**
-   - Mọi tài nguyên đăng tải đều minh bạch về điều khoản cấp phép:
+   - Mọi tài nguyên đăng tải đều minh bạch về điều khoản cấp phép sử dụng trong game:
      - `CC0 (Public Domain):` Miễn phí hoàn toàn, sử dụng cho mọi mục đích thương mại không cần ghi công.
      - `CC-BY (Attribution):` Được dùng thương mại nhưng bắt buộc ghi tên tác giả trong phần Credits của game.
      - `Standard Indie Commercial License:` Được sử dụng trong game thương mại, không được bán lại (resale) nguyên mẫu tệp tài nguyên gốc.
@@ -72,7 +72,7 @@ graph TD
     Creator["Nhà sáng tạo (Creator)"]:::actorStyle
     Admin["Quản trị viên (Admin)"]:::actorStyle
 
-    subgraph "HỆ THỐNG GAME ASSET MARKETPLACE (ITCH.IO SIMULATION)"
+    subgraph "HỆ THỐNG SÀN GIAO DỊCH TÀI NGUYÊN GAME (GAME ASSET MARKETPLACE)"
         UC1(["Xem & Tìm kiếm tài nguyên"]):::usecaseStyle
         UC2(["Lọc đa chiều theo Tags & Category"]):::usecaseStyle
         UC3(["Xem trước Demo Gallery (Ảnh/GIF/Audio)"]):::usecaseStyle
@@ -219,7 +219,7 @@ Dự án được xây dựng theo chuẩn **Kiến trúc Phân lớp (Layered A
 
 ### 3.4. Sơ đồ Luồng Tuần tự Xử lý qua 4 Tầng (Sequence Diagram)
 
-Dưới đây là sơ đồ luồng dữ liệu minh họa nghiệp vụ **Mua tài nguyên theo mô hình Pay What You Want (PWYW) của itch.io** đi qua đầy đủ 4 tầng:
+Dưới đây là sơ đồ luồng dữ liệu minh họa nghiệp vụ **Mua tài nguyên theo mô hình Pay What You Want (PWYW - Ủng hộ tác giả)** đi qua đầy đủ 4 tầng:
 
 ```mermaid
 sequenceDiagram
@@ -246,7 +246,7 @@ sequenceDiagram
     DB-->>P: Asset record (min_price = $5.00, uploader_id = 2)
     P-->>S: Asset Entity
     
-    Note over S: Kiểm tra nghiệp vụ itch.io (PWYW):
+    Note over S: Kiểm tra nghiệp vụ định giá linh hoạt (PWYW):
     Note over S: 1. Số tiền trả ($12) >= Giá sàn tối thiểu ($5) -> HỢP LỆ!
     Note over S: 2. Số dư ví ($20) >= Số tiền trả ($12) -> HỢP LỆ!
     Note over S: Mở Database Transaction (ACID)
@@ -266,20 +266,20 @@ sequenceDiagram
 
 ---
 
-## 4. THIẾT KẾ CƠ SỞ DỮ LIỆU & MÔ HÌNH THỰC THỂ (ITCH.IO SPECIFICATION)
+## 4. THIẾT KẾ CƠ SỞ DỮ LIỆU & MÔ HÌNH THỰC THỂ (DATABASE SPECIFICATION)
 
 Cơ sở dữ liệu được chuẩn hóa theo chuẩn 3NF bao gồm **9 thực thể** cốt lõi đáp ứng toàn bộ các chức năng sàn giao dịch:
 
 ### 4.1. Bảng Chi Tiết 9 Thực Thể (Database Entities Breakdown)
 
-| STT | Tên Thực Thể | Bảng CSDL | Thuộc tính chính | Mục đích & Đặc thù theo phong cách itch.io |
+| STT | Tên Thực Thể | Bảng CSDL | Thuộc tính chính | Mục đích & Ý nghĩa nghiệp vụ |
 | :---: | :--- | :--- | :--- | :--- |
 | 1 | **User** | `Users` | `user_id`, `username`, `email`, `password_hash`, `avatar_url`, `role`, `balance`, `bio`, `created_at` | Quản lý tài khoản, phân quyền (`customer`, `creator`, `admin`), hồ sơ nghệ sĩ và số dư ví điện tử để mua/nhận tiền bán tài nguyên. |
 | 2 | **Category** | `Categories` | `category_id`, `name`, `slug`, `description` | Danh mục cấp cao: *2D Assets*, *3D Models*, *Audio & Music*, *Visual Effects (VFX)*, *GUI & Fonts*, *Game Templates*. |
-| 3 | **Tag** | `Tags` | `tag_id`, `name`, `slug` | Hệ thống gắn thẻ đặc trưng của itch.io: phong cách nghệ thuật (`#pixel-art`), trạng thái chuyển động (`#animated`), thể loại game (`#retro`),... |
+| 3 | **Tag** | `Tags` | `tag_id`, `name`, `slug` | Hệ thống gắn thẻ phân loại linh hoạt: phong cách nghệ thuật (`#pixel-art`), trạng thái chuyển động (`#animated`), thể loại game (`#retro`),... |
 | 4 | **Asset** | `Assets` | `asset_id`, `title`, `short_description`, `description`, `price`, `thumbnail_url`, `file_url`, `file_size`, `license`, `views_count`, `downloads_count`, `status`, `uploader_id`, `category_id` | **Thực thể trung tâm:** Lưu trữ thông tin gói tài nguyên, tagline ngắn, giấy phép bản quyền (CC0, Commercial), đường dẫn tệp gốc an toàn và số liệu thống kê. |
 | 5 | **AssetMedia** | `AssetMedia` | `media_id`, `asset_id`, `media_url`, `media_type`, `display_order` | Thư viện đa phương tiện xem trước: Nhiều ảnh chụp màn hình, ảnh động GIF demo nhân vật chạy/nhảy hoặc video gameplay xem trước. |
-| 6 | **AssetTags** | `AssetTags` | `asset_id`, `tag_id` | Bảng liên kết nhiều-nhiều (N-N) phục vụ công cụ tìm kiếm và lọc đa điều kiện linh hoạt của itch.io. |
+| 6 | **AssetTags** | `AssetTags` | `asset_id`, `tag_id` | Bảng liên kết nhiều-nhiều (N-N) phục vụ công cụ tìm kiếm và lọc đa điều kiện linh hoạt. |
 | 7 | **Order** | `Orders` | `order_id`, `user_id`, `total_amount`, `payment_method`, `status`, `created_at` | Ghi nhận phiên giao dịch mua hàng hoặc nhận quà ủng hộ (PWYW). |
 | 8 | **OrderDetail**| `OrderDetails`| `order_detail_id`, `order_id`, `asset_id`, `price_at_purchase` | Lưu chi tiết từng món hàng trong đơn và lưu vết giá tại thời điểm giao dịch. |
 | 9 | **Review** | `Reviews` | `review_id`, `user_id`, `asset_id`, `rating`, `comment`, `created_at` | Đánh giá sao từ 1 đến 5 và phản hồi cộng đồng (Chỉ áp dụng cho Verified Buyer). |
@@ -397,7 +397,7 @@ ITWebNC-NO2/
 ├── database/                           # ==================== CƠ SỞ DỮ LIỆU (MySQL) ====================
 │   ├── gameassets.sql                  # [1-CLICK SCRIPT] Kịch bản gộp toàn diện Schema + Seeds (9 bảng)
 │   ├── schema.sql                      # [DDL] Kịch bản tạo 9 bảng, khóa chính, khóa ngoại, chỉ mục
-│   ├── seeds.sql                       # [DML] Kịch bản nạp dữ liệu mẫu phong phú phong cách itch.io
+│   ├── seeds.sql                       # [DML] Kịch bản nạp dữ liệu mẫu phong phú đa thể loại game
 │   └── README.md                       # Hướng dẫn chi tiết khởi tạo CSDL và tài khoản demo
 │
 ├── client/                             # ==================== PHÂN HỆ CLIENT (React 19) ====================
@@ -412,7 +412,7 @@ ITWebNC-NO2/
 │   │   │   ├── AuthContext.jsx         # Lưu trạng thái đăng nhập, giải mã JWT token, user profile
 │   │   │   └── CartContext.jsx         # Quản lý giỏ hàng tài nguyên chuẩn bị thanh toán
 │   │   ├── pages/                      # [TẦNG TRANG MÀN HÌNH CHÍNH]
-│   │   │   ├── HomePage.jsx            # Trang chủ (Hero banner, tags cloud phong cách itch.io)
+│   │   │   ├── HomePage.jsx            # Trang chủ (Hero banner, tags cloud phân loại đa chiều)
 │   │   │   ├── BrowsePage.jsx          # Trang lọc & tìm kiếm nâng cao (kết hợp category + tags)
 │   │   │   ├── AssetDetailPage.jsx     # Trang chi tiết tài nguyên (slider ảnh/GIF, nghe audio, reviews)
 │   │   │   ├── CartPage.jsx            # Màn hình giỏ hàng và thanh toán PWYW ủng hộ tác giả
@@ -449,17 +449,18 @@ ITWebNC-NO2/
     │   │   ├── auth.controller.ts      # [TẦNG TRÌNH DIỄN] API đăng ký, đăng nhập
     │   │   ├── auth.service.ts         # [TẦNG NGHIỆP VỤ] Logic băm Bcrypt, cấp phát JWT token
     │   │   ├── auth.module.ts          # Đóng gói Module Xác thực
-    │   │   ├── jwt.strategy.ts         # Passport JWT Strategy xác thực token
-    │   │   ├── guards/                 # JwtAuthGuard, RolesGuard bảo vệ endpoint theo vai trò
-    │   │   └── dto/                    # DTOs cho Login, Register
+    │   │   ├── strategies/             # JwtStrategy xác thực token Passport
+    │   │   ├── guards/                 # JwtAuthGuard, LocalAuthGuard, RolesGuard bảo vệ endpoint
+    │   │   ├── decorators/             # @Roles() decorator phân quyền RBAC
+    │   │   └── dto/                    # login.dto.ts
     │   ├── user/                       # Phân hệ Quản lý Người dùng & Ví tiền
-    │   │   ├── user.controller.ts      # [TẦNG TRÌNH DIỄN] Tiếp nhận request CRUD User, Nạp tiền ví
+    │   │   ├── user.controller.ts      # [TẦNG TRÌNH DIỄN] Tiếp nhận request CRUD User, Nạp tiền ví, Profile
     │   │   ├── user.service.ts         # [TẦNG NGHIỆP VỤ] Xử lý logic người dùng, kiểm tra số dư ví
     │   │   ├── user.provider.ts        # [TẦNG TRUY XUẤT DỮ LIỆU] Khởi tạo USER_REPOSITORY từ DATA_SOURCE
     │   │   ├── user.module.ts          # Đóng gói UserModule, nạp DatabaseModule & userProviders
     │   │   ├── entities/               
     │   │   │   └── user.entity.ts      # [TẦNG THỰC THỂ] Ánh xạ bảng CSDL `Users`
-    │   │   └── dto/                    # [TẦNG DTO] CreateUserDto, UpdateUserDto
+    │   │   └── dto/                    # [TẦNG DTO] CreateUserDto, UpdateUserDto, DepositDto
     │   │
     │   │   # -----------------------------------------------------------------------------------------
     │   │   # 3. PHÂN HỆ CATEGORY & DATABASE (Phụ trách: Nguyễn Mạnh Thắng - 23010098)
@@ -476,7 +477,7 @@ ITWebNC-NO2/
     │   │   # -----------------------------------------------------------------------------------------
     │   │   # 4. PHÂN HỆ TAG & ASSET MEDIA (Phụ trách: Nguyễn Hữu Hưng - 23010124)
     │   │   # -----------------------------------------------------------------------------------------
-    │   ├── tag/                        # Phân hệ Thẻ gắn linh hoạt (itch.io Tags System)
+    │   ├── tag/                        # Phân hệ Thẻ gắn linh hoạt (Multi-Dimensional Tags System)
     │   │   ├── tag.controller.ts       # [TẦNG TRÌNH DIỄN] API lấy tags phổ biến, tìm kiếm theo tag
     │   │   ├── tag.service.ts          # [TẦNG NGHIỆP VỤ] Xử lý gán thẻ, gợi ý thẻ tag thông minh
     │   │   ├── tag.provider.ts         # [TẦNG TRUY XUẤT DỮ LIỆU] Khởi tạo TAG_REPOSITORY từ DATA_SOURCE
@@ -544,17 +545,20 @@ Tất cả các API đều có tiền tố chung (Global Prefix): **`/api`**.
 | `POST` | `/api/auth/register` | `AuthService.register()` | Đăng ký tài khoản người dùng mới | Công khai |
 | `POST` | `/api/auth/login` | `AuthService.login()` | Đăng nhập hệ thống, sinh mã JWT | Công khai |
 | `GET` | `/api/auth/profile` | `AuthService.getProfile()` | Lấy thông tin tài khoản hiện tại | User (`Bearer Token`) |
-| `GET` | `/api/user` | `UserService.findAll()` | Lấy danh sách toàn bộ người dùng | Admin |
-| `GET` | `/api/user/:id` | `UserService.findOne()` | Xem chi tiết thông tin tác giả/người dùng | Công khai |
-| `PATCH` | `/api/user/:id` | `UserService.update()` | Chỉnh sửa hồ sơ, ảnh đại diện, bio | Chính chủ |
-| `POST` | `/api/user/:id/deposit`| `UserService.deposit()` | Nạp tiền vào số dư ví cá nhân | Chính chủ |
+| `GET` | `/api/users` | `UserService.findAll()` | Lấy danh sách toàn bộ người dùng | Admin |
+| `GET` | `/api/users/:id` | `UserService.findOne()` | Xem chi tiết thông tin tác giả/người dùng | Công khai |
+| `GET` | `/api/users/profile` | `UserService.findOne()` | Xem hồ sơ và số dư ví của chính mình | User (`Bearer Token`) |
+| `PUT` | `/api/users/profile` | `UserService.update()` | Chỉnh sửa hồ sơ cá nhân, bio, avatar | Chính chủ |
+| `PUT` / `PATCH` | `/api/users/:id` | `UserService.update()` | Chỉnh sửa hồ sơ người dùng theo ID | Chính chủ / Admin |
+| `POST` | `/api/users/wallet/deposit` | `UserService.deposit()` | Nạp tiền vào số dư ví cá nhân | Chính chủ (`Bearer Token`) |
+| `POST` | `/api/users/:id/deposit` | `UserService.deposit()` | Nạp tiền vào số dư ví theo User ID | Chính chủ / Admin |
 
 ### 6.2. Phân hệ Danh mục & Thẻ gắn (`CategoryController` & `TagController`)
 | Phương thức | Đường dẫn API | Tầng Service tiếp nhận | Chức năng nghiệp vụ | Quyền truy cập |
 | :---: | :--- | :--- | :--- | :---: |
 | `GET` | `/api/category` | `CategoryService.findAll()` | Lấy toàn bộ danh mục phân loại | Công khai |
 | `POST` | `/api/category` | `CategoryService.create()` | Thêm danh mục mới (2D, 3D, Audio,...) | Admin |
-| `GET` | `/api/tag` | `TagService.findAll()` | Lấy danh sách toàn bộ thẻ tags phong cách itch.io | Công khai |
+| `GET` | `/api/tag` | `TagService.findAll()` | Lấy danh sách toàn bộ thẻ tags phân loại game | Công khai |
 | `GET` | `/api/tag/popular` | `TagService.findPopular()` | Lấy các tags thịnh hành nhất (`#pixel-art`,...) | Công khai |
 
 ### 6.3. Phân hệ Tài nguyên Game (`AssetController`)
@@ -590,7 +594,7 @@ Có 2 cách khởi tạo cực kỳ đơn giản:
 * **Cách 1 (Nhanh nhất - 1 Click):** Mở file [database/gameassets.sql](./database/gameassets.sql) trong MySQL Workbench và bấm nút **Execute (Tia sét)**. Toàn bộ 9 bảng và dữ liệu mẫu sẽ được tạo tự động.
 * **Cách 2 (Chuẩn quy trình đồ án):** Mở thư mục [database/](./database/):
   1. Chạy file [database/schema.sql](./database/schema.sql) để tạo cấu trúc 9 bảng và quan hệ khóa ngoại.
-  2. Chạy tiếp file [database/seeds.sql](./database/seeds.sql) để nạp dữ liệu mẫu phong phú phong cách itch.io.
+  2. Chạy tiếp file [database/seeds.sql](./database/seeds.sql) để nạp dữ liệu mẫu phong phú đa thể loại game.
   3. Xem chi tiết danh sách tài khoản demo tại [database/README.md](./database/README.md).
 
 ### 7.3. Cài đặt & Khởi động Backend (NestJS Server)
