@@ -1,5 +1,5 @@
 # TUÂN THỦ PHÁP LÝ, ĐẠO ĐỨC NGHỀ NGHIỆP & BẢO VỆ DỮ LIỆU
-## HỌC PHẦN: THIẾT KẾ WEB NÂNG CAO (LEC 6 - LEGAL, ETHICAL, SOCIAL & PROFESSIONAL ASPECTS)
+## TIÊU CHUẨN: LEGAL, ETHICAL, SOCIAL & PROFESSIONAL ASPECTS
 
 > Tài liệu phân tích việc áp dụng các tiêu chuẩn pháp lý, đạo đức và quy định bảo vệ dữ liệu người dùng trong Sàn giao dịch tài nguyên game.
 

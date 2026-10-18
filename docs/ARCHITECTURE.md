@@ -1,7 +1,7 @@
 # KIẾN TRÚC HỆ THỐNG & BẢO MẬT (SYSTEM ARCHITECTURE & SECURITY)
 ## CHUẨN KIẾN TRÚC 4 TẦNG & GIAO THỨC JWT / RBAC
 
-> Tài liệu mô tả nguyên lý thiết kế Kiến trúc phân lớp (Layered Architecture - Học phần Lec 3) và cơ chế Xác thực & Phân quyền bảo mật (Học phần Lec 4).
+> Tài liệu mô tả nguyên lý thiết kế Kiến trúc phân lớp (Layered Architecture) và cơ chế Xác thực & Phân quyền bảo mật của hệ thống.
 
 ---
 
@@ -74,9 +74,9 @@ Hệ thống được thiết kế phân chia trách nhiệm rõ ràng theo nguy
 
 ---
 
-## 3. SO SÁNH LOCALSTORAGE VÀ HTTPONLY COOKIE (ĐỐI CHIẾU LEC 4)
+## 3. SO SÁNH LOCALSTORAGE VÀ HTTPONLY COOKIE
 
-Trong học phần Web Nâng Cao (Lec 4 - Security), việc lưu trữ Token có 2 trường phái:
+Trong quá trình thiết kế hệ thống bảo mật Web, việc lưu trữ Token có 2 trường phái:
 
 | Tiêu chí | Lưu trữ `localStorage` (Hiện tại) | Lưu trữ `HttpOnly Cookie` |
 | :--- | :--- | :--- |

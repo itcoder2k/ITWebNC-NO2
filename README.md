@@ -23,11 +23,11 @@ Mỗi thành viên trong nhóm phụ trách độc lập trọn vẹn đối tư
 
 Để đảm bảo tính chuyên nghiệp và tiêu chuẩn công nghiệp, toàn bộ các bản thiết kế chi tiết được phân tách khoa học trong thư mục **[`docs/`](./docs/)**:
 
-* 📐 **[Kiến trúc 4 Tầng & Bảo mật (ARCHITECTURE.md)](./docs/ARCHITECTURE.md):** Phân tích mô hình 4 tầng, cơ chế xác thực JWT, bảo vệ RBAC Role Guard và so sánh bảo mật giữa LocalStorage vs HttpOnly Cookie (đối chiếu bài giảng Lec 3 & Lec 4).
+* 📐 **[Kiến trúc 4 Tầng & Bảo mật (ARCHITECTURE.md)](./docs/ARCHITECTURE.md):** Phân tích mô hình 4 tầng, cơ chế xác thực JWT, bảo vệ RBAC Role Guard và so sánh chi tiết phương án lưu trữ LocalStorage vs HttpOnly Cookie.
 * 🔄 **[Sơ đồ Luồng Tuần tự (SEQUENCE_DIAGRAMS.md)](./docs/SEQUENCE_DIAGRAMS.md):** Biểu đồ Mermaid chi tiết luồng Đăng nhập, luồng Nạp tiền ví điện tử và luồng Mua tài nguyên Pay What You Want (PWYW).
 * 🗄️ **[Thiết kế Cơ sở Dữ liệu & ERD (DATABASE_DESIGN.md)](./docs/DATABASE_DESIGN.md):** Lược đồ 9 bảng, sơ đồ lớp UML Class Diagram và cơ chế đảm bảo tính toàn vẹn giao dịch ACID.
 * 🎯 **[Đặc tả Ca Sử Dụng & Actors (USE_CASES.md)](./docs/USE_CASES.md):** Biểu đồ Use Case Diagram tổng thể và ma trận quyền hạn cho 4 tác nhân (Guest, Buyer, Creator, Admin).
-* ⚖️ **[Tuân thủ Pháp lý & Đạo đức (LEGAL_AND_ETHICS.md)](./docs/LEGAL_AND_ETHICS.md):** Báo cáo tuân thủ luật bảo vệ dữ liệu GDPR, chính sách Cookie Consent và quản lý bản quyền số tài nguyên game (đáp ứng bài giảng Lec 6).
+* ⚖️ **[Tuân thủ Pháp lý & Đạo đức (LEGAL_AND_ETHICS.md)](./docs/LEGAL_AND_ETHICS.md):** Báo cáo tuân thủ luật bảo vệ dữ liệu GDPR, chính sách Cookie Consent và quản lý bản quyền số tài nguyên game.
 
 ---
 
