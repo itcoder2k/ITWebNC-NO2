@@ -8,7 +8,9 @@ const categories = [
     desc: 'Nhân vật, tileset bản đồ, hoạt ảnh chuyển động cắt nhỏ cho Unity, Godot & Unreal.',
     icon: '👾',
     count: '1,240+ assets',
-    tag: 'Phổ biến'
+    tag: 'Phổ biến',
+    color: '#0284c7',
+    badgeBg: 'rgba(2, 132, 199, 0.1)'
   },
   {
     id: '3d',
@@ -16,7 +18,9 @@ const categories = [
     desc: 'Mô hình vật thể 3D, xe cộ, vũ khí, texture PBR chuẩn định dạng .FBX, .OBJ, .GLTF.',
     icon: '🧊',
     count: '850+ models',
-    tag: 'Trending'
+    tag: 'Trending',
+    color: '#8b5cf6',
+    badgeBg: 'rgba(139, 92, 246, 0.1)'
   },
   {
     id: 'audio',
@@ -24,7 +28,9 @@ const categories = [
     desc: 'Nhạc nền vòng lặp (BGM), hiệu ứng chém, bắn súng, âm thanh môi trường chuẩn wav/mp3.',
     icon: '🎵',
     count: '2,100+ tracks',
-    tag: 'Royalty-Free'
+    tag: 'Royalty-Free',
+    color: '#10b981',
+    badgeBg: 'rgba(16, 185, 129, 0.1)'
   },
   {
     id: 'uikit',
@@ -32,94 +38,113 @@ const categories = [
     desc: 'Giao diện bảng máu, nút bấm, menu cài đặt, khung hội thoại và font chữ game retro.',
     icon: '🖼️',
     count: '620+ packs',
-    tag: 'Vector & PSD'
+    tag: 'Vector & PSD',
+    color: '#f59e0b',
+    badgeBg: 'rgba(245, 158, 11, 0.1)'
   }
 ];
 
 export default function FeaturedCategories() {
   return (
-    <section id="categories" style={{ padding: '70px 0', borderBottom: '1px solid #2e3035' }}>
+    <section 
+      id="categories" 
+      className="py-5"
+      style={{ 
+        backgroundColor: '#ffffff',
+        borderBottom: '1px solid #e2e8f0',
+        padding: '65px 0' 
+      }}
+    >
       <div className="container">
-        <div style={{ textAlign: 'center', marginBottom: '45px' }}>
-          <h2 style={{ fontSize: '30px', fontWeight: '800', marginBottom: '10px' }}>
+        
+        {/* Header Section */}
+        <div className="text-center mb-5">
+          <span 
+            className="badge rounded-pill px-3 py-2 fw-semibold mb-2"
+            style={{
+              backgroundColor: 'rgba(2, 132, 199, 0.1)',
+              color: '#0284c7',
+              border: '1px solid rgba(2, 132, 199, 0.2)'
+            }}
+          >
+            <i className="bi bi-grid-fill me-1"></i> Khám Phá Thư Viện
+          </span>
+          <h2 className="fw-bolder text-dark mb-2" style={{ fontSize: '28px', letterSpacing: '-0.02em' }}>
             Danh Mục Tài Nguyên Trọng Tâm
           </h2>
-          <p style={{ color: '#9aa0a6', fontSize: '15px' }}>
-            Được phân loại khoa học giúp lập trình viên game tìm kiếm nhanh chóng
+          <p className="text-muted" style={{ fontSize: '15px', maxWidth: '580px', margin: '0 auto' }}>
+            Được phân loại khoa học giúp lập trình viên game tìm kiếm nhanh chóng và chính xác
           </p>
         </div>
 
         {/* Grid 4 Cards */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
-          gap: '24px'
-        }}>
+        <div className="row g-4">
           {categories.map((cat) => (
-            <Link
-              key={cat.id}
-              to={`/blank?cat=${cat.id}`}
-              style={{
-                backgroundColor: '#24252a',
-                border: '1px solid #363840',
-                borderRadius: '16px',
-                padding: '28px 24px',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-between',
-                transition: 'all 0.25s ease',
-                textDecoration: 'none'
-              }}
-              onMouseEnter={e => {
-                e.currentTarget.style.borderColor = '#00d2ff';
-                e.currentTarget.style.transform = 'translateY(-4px)';
-                e.currentTarget.style.boxShadow = '0 12px 24px rgba(0, 0, 0, 0.4)';
-              }}
-              onMouseLeave={e => {
-                e.currentTarget.style.borderColor = '#363840';
-                e.currentTarget.style.transform = 'translateY(0)';
-                e.currentTarget.style.boxShadow = 'none';
-              }}
-            >
-              <div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '18px' }}>
-                  <span style={{ fontSize: '36px' }}>{cat.icon}</span>
-                  <span style={{
-                    fontSize: '11px',
-                    fontWeight: '700',
-                    textTransform: 'uppercase',
-                    padding: '4px 10px',
-                    borderRadius: '20px',
-                    backgroundColor: 'rgba(0, 210, 255, 0.12)',
-                    color: '#00d2ff',
-                    border: '1px solid rgba(0, 210, 255, 0.3)'
-                  }}>
-                    {cat.tag}
+            <div key={cat.id} className="col-12 col-sm-6 col-lg-3">
+              <Link
+                to={`/blank?cat=${cat.id}`}
+                className="card h-100 p-4 rounded-4 text-decoration-none shadow-sm card-hover"
+                style={{
+                  backgroundColor: '#ffffff',
+                  border: '1px solid #e2e8f0',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'space-between',
+                  transition: 'all 0.25s ease'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = cat.color;
+                  e.currentTarget.style.transform = 'translateY(-5px)';
+                  e.currentTarget.style.boxShadow = `0 12px 24px -6px ${cat.badgeBg.replace('0.1', '0.25')}`;
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = '#e2e8f0';
+                  e.currentTarget.style.transform = 'translateY(0)';
+                  e.currentTarget.style.boxShadow = '0 1px 3px 0 rgba(0, 0, 0, 0.05)';
+                }}
+              >
+                <div>
+                  <div className="d-flex justify-content-between align-items-center mb-3">
+                    <span style={{ fontSize: '36px' }}>{cat.icon}</span>
+                    <span 
+                      style={{
+                        fontSize: '11px',
+                        fontWeight: '700',
+                        textTransform: 'uppercase',
+                        padding: '4px 10px',
+                        borderRadius: '20px',
+                        backgroundColor: cat.badgeBg,
+                        color: cat.color,
+                        border: `1px solid ${cat.color}30`
+                      }}
+                    >
+                      {cat.tag}
+                    </span>
+                  </div>
+                  
+                  <h3 className="fw-bold text-dark mb-2" style={{ fontSize: '17px' }}>
+                    {cat.title}
+                  </h3>
+                  
+                  <p className="text-muted small mb-4" style={{ lineHeight: '1.5', minHeight: '42px' }}>
+                    {cat.desc}
+                  </p>
+                </div>
+
+                <div 
+                  className="d-flex justify-content-between align-items-center pt-3 small"
+                  style={{ borderTop: '1px solid #f1f5f9' }}
+                >
+                  <span className="text-muted fw-medium">{cat.count}</span>
+                  <span className="fw-bold d-flex align-items-center gap-1" style={{ color: cat.color }}>
+                    Xem ngay <i className="bi bi-arrow-right"></i>
                   </span>
                 </div>
-                <h3 style={{ fontSize: '19px', fontWeight: '700', color: '#fff', marginBottom: '10px' }}>
-                  {cat.title}
-                </h3>
-                <p style={{ fontSize: '14px', color: '#9aa0a6', lineHeight: '1.5', marginBottom: '20px' }}>
-                  {cat.desc}
-                </p>
-              </div>
-
-              <div style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                paddingTop: '16px',
-                borderTop: '1px solid #2e3035',
-                fontSize: '13px',
-                color: '#6b7280'
-              }}>
-                <span>{cat.count}</span>
-                <span style={{ color: '#00d2ff', fontWeight: '600' }}>Xem ngay →</span>
-              </div>
-            </Link>
+              </Link>
+            </div>
           ))}
         </div>
+
       </div>
     </section>
   );
