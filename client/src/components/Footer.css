@@ -1,0 +1,480 @@
+/* ==========================================================================
+   CRAFTPIX-INSPIRED DARK FOOTER STYLING
+   Game Asset Marketplace - 4-Column Professional Dark Theme
+   ========================================================================== */
+
+.craftpix-footer {
+  background-color: #0b0e14;
+  background-image: 
+    radial-gradient(circle at 50% 0%, rgba(2, 132, 199, 0.12) 0%, transparent 60%),
+    linear-gradient(180deg, #0e121a 0%, #080a0f 100%);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  color: #94a3b8;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  position: relative;
+  overflow: hidden;
+  margin-top: auto;
+}
+
+/* Glowing top highlight line */
+.craftpix-footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 10%;
+  right: 10%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(56, 189, 248, 0.6), rgba(2, 132, 199, 0.8), rgba(56, 189, 248, 0.6), transparent);
+}
+
+/* Newsletter / Free Assets Banner Section */
+.footer-newsletter-banner {
+  background: rgba(18, 24, 38, 0.7);
+  border: 1px solid rgba(56, 189, 248, 0.18);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  padding: 24px 30px;
+  margin-bottom: 50px;
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.footer-newsletter-title {
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 1.15rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
+.footer-newsletter-desc {
+  color: #94a3b8;
+  font-size: 0.875rem;
+  margin-bottom: 0;
+}
+
+.footer-newsletter-input-group {
+  display: flex;
+  background: #0d1119;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 50rem;
+  padding: 4px 6px 4px 18px;
+  transition: all 0.25s ease;
+}
+
+.footer-newsletter-input-group:focus-within {
+  border-color: #0284c7;
+  box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.25);
+  background: #111622;
+}
+
+.footer-newsletter-input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #f1f5f9;
+  font-size: 0.875rem;
+  width: 100%;
+}
+
+.footer-newsletter-input::placeholder {
+  color: #64748b;
+}
+
+.footer-newsletter-btn {
+  background: linear-gradient(135deg, #0284c7 0%, #0ea5e9 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 50rem;
+  padding: 8px 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(2, 132, 199, 0.35);
+}
+
+.footer-newsletter-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(2, 132, 199, 0.5);
+  background: linear-gradient(135deg, #0369a1 0%, #0284c7 100%);
+}
+
+/* 4 Columns Layout */
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr 1.1fr;
+  gap: 40px;
+  margin-bottom: 45px;
+}
+
+@media (max-width: 1024px) {
+  .footer-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 36px;
+  }
+}
+
+@media (max-width: 640px) {
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  .footer-newsletter-banner {
+    padding: 20px;
+  }
+}
+
+/* Column Headers */
+.footer-heading {
+  color: #ffffff;
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 20px;
+  position: relative;
+  display: inline-block;
+  padding-bottom: 8px;
+}
+
+.footer-heading::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 28px;
+  height: 2px;
+  background: linear-gradient(90deg, #0284c7, #38bdf8);
+  border-radius: 2px;
+}
+
+/* Brand Identity in Col 1 */
+.footer-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  margin-bottom: 16px;
+}
+
+.footer-brand-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.35rem;
+  box-shadow: 0 4px 14px rgba(2, 132, 199, 0.35);
+  transition: transform 0.3s ease;
+}
+
+.footer-brand:hover .footer-brand-icon {
+  transform: rotate(-8deg) scale(1.08);
+}
+
+.footer-brand-name {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+}
+
+.footer-brand-highlight {
+  color: #38bdf8;
+}
+
+.footer-brand-tagline {
+  font-size: 0.75rem;
+  color: #94a3b8;
+  display: block;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.footer-about-text {
+  color: #94a3b8;
+  font-size: 0.875rem;
+  line-height: 1.65;
+  margin-bottom: 18px;
+}
+
+/* Feature badges in Col 1 */
+.footer-trust-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 22px;
+}
+
+.footer-trust-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  color: #cbd5e1;
+}
+
+/* Social Icon Buttons */
+.footer-social-links {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.footer-social-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #cbd5e1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  text-decoration: none;
+  transition: all 0.25s ease;
+}
+
+.footer-social-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+}
+
+.footer-social-btn.discord:hover {
+  background: #5865F2;
+  border-color: #5865F2;
+  color: #ffffff;
+}
+
+.footer-social-btn.github:hover {
+  background: #24292e;
+  border-color: #f0f6fc;
+  color: #ffffff;
+}
+
+.footer-social-btn.youtube:hover {
+  background: #FF0000;
+  border-color: #FF0000;
+  color: #ffffff;
+}
+
+.footer-social-btn.twitter:hover {
+  background: #1DA1F2;
+  border-color: #1DA1F2;
+  color: #ffffff;
+}
+
+.footer-social-btn.telegram:hover {
+  background: #229ED9;
+  border-color: #229ED9;
+  color: #ffffff;
+}
+
+/* Links lists in Col 2, 3, 4 */
+.footer-nav-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.footer-nav-item {
+  margin: 0;
+}
+
+.footer-nav-link {
+  color: #94a3b8;
+  text-decoration: none;
+  font-size: 0.875rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.footer-nav-link i {
+  font-size: 0.95rem;
+  color: #64748b;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.footer-nav-link:hover {
+  color: #ffffff;
+  transform: translateX(4px);
+}
+
+.footer-nav-link:hover i {
+  color: #38bdf8;
+  transform: scale(1.15);
+}
+
+/* Mini Badges inside nav links */
+.footer-badge {
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-left: 6px;
+  vertical-align: middle;
+}
+
+.footer-badge.badge-hot {
+  background: linear-gradient(135deg, #ef4444 0%, #f97316 100%);
+  color: #ffffff;
+  box-shadow: 0 2px 6px rgba(239, 68, 68, 0.4);
+}
+
+.footer-badge.badge-free {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: #ffffff;
+  box-shadow: 0 2px 6px rgba(16, 185, 129, 0.4);
+}
+
+.footer-badge.badge-pbr {
+  background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%);
+  color: #ffffff;
+  box-shadow: 0 2px 6px rgba(139, 92, 246, 0.4);
+}
+
+.footer-badge.badge-dev {
+  background: rgba(2, 132, 199, 0.2);
+  border: 1px solid rgba(56, 189, 248, 0.4);
+  color: #38bdf8;
+}
+
+/* Col 4 - Contact and Legal Details */
+.footer-contact-box {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 10px;
+  padding: 14px;
+  margin-top: 14px;
+}
+
+.footer-contact-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 0.8rem;
+  color: #cbd5e1;
+  margin-bottom: 8px;
+}
+
+.footer-contact-item:last-child {
+  margin-bottom: 0;
+}
+
+.footer-contact-item i {
+  color: #38bdf8;
+  font-size: 0.95rem;
+  margin-top: 2px;
+}
+
+.footer-contact-item a {
+  color: #cbd5e1;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.footer-contact-item a:hover {
+  color: #38bdf8;
+  text-decoration: underline;
+}
+
+/* Bottom Bar */
+.footer-bottom {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  font-size: 0.8rem;
+  color: #64748b;
+}
+
+.footer-bottom-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.footer-bottom-copy {
+  color: #94a3b8;
+}
+
+.footer-bottom-project {
+  color: #64748b;
+  font-size: 0.75rem;
+}
+
+.footer-bottom-project strong {
+  color: #cbd5e1;
+}
+
+/* Trust / Payment methods and back-to-top */
+.footer-bottom-actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.footer-payment-badges {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.footer-payment-badge {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  padding: 4px 8px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #94a3b8;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.footer-scroll-top {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #cbd5e1;
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 0.8rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.footer-scroll-top:hover {
+  background: #0284c7;
+  border-color: #0284c7;
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(2, 132, 199, 0.4);
+}
