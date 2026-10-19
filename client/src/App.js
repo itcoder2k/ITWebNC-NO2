@@ -1,11 +1,19 @@
 import React from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import './styles/theme.css';
+import HomePage from './pages/HomePage';
+import BlankPage from './pages/BlankPage';
 
 function App() {
   return (
-    <div style={{ padding: '40px', textAlign: 'center', fontFamily: 'sans-serif' }}>
-      <h1>Game Asset Marketplace</h1>
-      <p>Frontend sẵn sàng để xây dựng lại từ đầu!</p>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/blank" element={<BlankPage />} />
+        {/* Bất kỳ route nào chưa định nghĩa cũng tự động về BlankPage */}
+        <Route path="*" element={<BlankPage title="404 - Trang chưa khả dụng" />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
