@@ -7,6 +7,8 @@ import { AssetModule } from './asset/asset.module.js';
 import { CategoryModule } from './category/category.module.js';
 import { UserModule } from './user/user.module.js';
 import { AuthModule } from './auth/auth.module.js';
+import { TagModule } from './tag/tag.module.js';
+import { AssetMediaModule } from './asset-media/asset-media.module.js';
 
 @Module({
   imports: [
@@ -18,6 +20,8 @@ import { AuthModule } from './auth/auth.module.js';
     CategoryModule,
     UserModule,
     AuthModule,
+    TagModule,
+    AssetMediaModule,
   ],
   controllers: [AppController],
   providers: [AppService],

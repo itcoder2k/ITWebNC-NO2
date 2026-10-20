@@ -1,17 +1,19 @@
 import {
-    Column,
-    Entity,
-    PrimaryGeneratedColumn,
+  Column,
+  Entity,
+  Index,
+  PrimaryGeneratedColumn,
 } from 'typeorm';
 
 @Entity('Tags')
 export class Tag {
-    @PrimaryGeneratedColumn()
-    tag_id: number;
+  @PrimaryGeneratedColumn({ name: 'tag_id' })
+  tag_id: number;
 
-    @Column({ length: 100 })
-    name: string;
+  @Column({ type: 'varchar', length: 50, unique: true })
+  name: string;
 
-    @Column({ length: 100 })
-    slug: string;
+  @Index('idx_tag_slug')
+  @Column({ type: 'varchar', length: 50, unique: true })
+  slug: string;
 }
