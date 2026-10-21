@@ -9,6 +9,8 @@ import { UserModule } from './user/user.module.js';
 import { AuthModule } from './auth/auth.module.js';
 import { TagModule } from './tag/tag.module.js';
 import { AssetMediaModule } from './asset-media/asset-media.module.js';
+import { OrderModule } from './order/order.module.js';
+import { ReviewModule } from './review/review.module.js';
 
 @Module({
   imports: [
@@ -22,6 +24,8 @@ import { AssetMediaModule } from './asset-media/asset-media.module.js';
     AuthModule,
     TagModule,
     AssetMediaModule,
+    OrderModule,
+    ReviewModule,
   ],
   controllers: [AppController],
   providers: [AppService],

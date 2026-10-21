@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Navbar from '../components/layout/Navbar';
 import Footer from '../components/layout/Footer';
 import HeroBanner from '../components/HeroBanner';
@@ -67,9 +68,14 @@ export default function HomePage() {
                   <p className="text-muted small mb-3">
                     <code>MediaGallery</code>, <code>ProductBuyBox</code>, <code>ProductSpecTabs</code>
                   </p>
-                  <span className="badge bg-light text-secondary border border-light-subtle rounded-pill py-2">
-                    Chờ ghép Section
-                  </span>
+                  <div className="d-flex flex-column align-items-center gap-2">
+                    <span className="badge bg-success-subtle text-success border border-success-subtle rounded-pill py-2">
+                      <i className="bi bi-check2-circle me-1"></i> Đã ghép trang chi tiết
+                    </span>
+                    <Link className="btn btn-outline-primary btn-sm rounded-pill px-3" to="/assets/1">
+                      Xem thử Asset Detail
+                    </Link>
+                  </div>
                 </div>
               </div>
 

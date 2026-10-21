@@ -1,34 +1,38 @@
 import {
-    Column,
-    CreateDateColumn,
-    Entity,
-    PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
 } from 'typeorm';
 
 @Entity('Orders')
 export class Order {
-    @PrimaryGeneratedColumn()
-    order_id: number;
+  @PrimaryGeneratedColumn({ name: 'order_id' })
+  order_id: number;
 
-    @Column()
-    user_id: number;
+  @Column({ type: 'int', name: 'user_id' })
+  user_id: number;
 
-    @Column({ type: 'decimal', precision: 10, scale: 2, default: 0 })
-    total_amount: number;
+  @Column({ type: 'decimal', precision: 10, scale: 2, default: 0.0 })
+  total_amount: number;
 
-    @Column({
-        type: 'enum',
-        enum: ['wallet', 'vnpay', 'momo'],
-    })
-    payment_method: string;
+  @Column({ type: 'varchar', length: 50, default: 'wallet' })
+  payment_method: string;
 
-    @Column({
-        type: 'enum',
-        enum: ['Pending', 'Completed', 'Cancelled'],
-        default: 'Pending',
-    })
-    status: string;
+  @Column({
+    type: 'enum',
+    enum: [
+      'Pending',
+      'Completed',
+      'Cancelled',
+      'pending',
+      'completed',
+      'cancelled',
+    ],
+    default: 'Completed',
+  })
+  status: string;
 
-    @CreateDateColumn()
-    created_at: Date;
+  @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
+  created_at: Date;
 }

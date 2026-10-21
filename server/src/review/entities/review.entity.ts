@@ -1,27 +1,27 @@
 import {
-    Column,
-    CreateDateColumn,
-    Entity,
-    PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
 } from 'typeorm';
 
 @Entity('Reviews')
 export class Review {
-    @PrimaryGeneratedColumn()
-    review_id: number;
+  @PrimaryGeneratedColumn({ name: 'review_id' })
+  review_id: number;
 
-    @Column()
-    user_id: number;
+  @Column({ type: 'int', name: 'user_id' })
+  user_id: number;
 
-    @Column()
-    asset_id: number;
+  @Column({ type: 'int', name: 'asset_id' })
+  asset_id: number;
 
-    @Column()
-    rating: number;
+  @Column({ type: 'tinyint' })
+  rating: number;
 
-    @Column({ type: 'text', nullable: true })
-    comment: string | null;
+  @Column({ type: 'text', nullable: true })
+  comment: string | null;
 
-    @CreateDateColumn()
-    created_at: Date;
+  @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
+  created_at: Date;
 }

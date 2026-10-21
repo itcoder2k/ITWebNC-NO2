@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 const categories = [
   {
-    id: '2d',
+    id: '2d-game-assets',
     title: '2D Sprites & Pixel Art',
     desc: 'Nhân vật, tileset bản đồ, hoạt ảnh chuyển động cắt nhỏ cho Unity, Godot & Unreal.',
     icon: '👾',
@@ -13,7 +13,7 @@ const categories = [
     badgeBg: 'rgba(2, 132, 199, 0.1)'
   },
   {
-    id: '3d',
+    id: '3d-models',
     title: '3D Models & Low-Poly',
     desc: 'Mô hình vật thể 3D, xe cộ, vũ khí, texture PBR chuẩn định dạng .FBX, .OBJ, .GLTF.',
     icon: '🧊',
@@ -23,7 +23,7 @@ const categories = [
     badgeBg: 'rgba(139, 92, 246, 0.1)'
   },
   {
-    id: 'audio',
+    id: 'audio-sfx',
     title: 'Âm thanh & SFX Bản quyền',
     desc: 'Nhạc nền vòng lặp (BGM), hiệu ứng chém, bắn súng, âm thanh môi trường chuẩn wav/mp3.',
     icon: '🎵',
@@ -33,7 +33,7 @@ const categories = [
     badgeBg: 'rgba(16, 185, 129, 0.1)'
   },
   {
-    id: 'uikit',
+    id: 'gui-fonts',
     title: 'Game UI Kits & HUD',
     desc: 'Giao diện bảng máu, nút bấm, menu cài đặt, khung hội thoại và font chữ game retro.',
     icon: '🖼️',
@@ -82,7 +82,7 @@ export default function FeaturedCategories() {
           {categories.map((cat) => (
             <div key={cat.id} className="col-12 col-sm-6 col-lg-3">
               <Link
-                to={`/blank?cat=${cat.id}`}
+                to={`/catalog?cat=${cat.id}`}
                 className="card h-100 p-4 rounded-4 text-decoration-none shadow-sm card-hover"
                 style={{
                   backgroundColor: '#ffffff',

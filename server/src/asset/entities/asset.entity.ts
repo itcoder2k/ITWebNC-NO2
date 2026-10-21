@@ -8,10 +8,10 @@ import {
 
 @Entity('Assets')
 export class Asset {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn({ name: 'asset_id' })
   asset_id: number;
 
-  @Column({ length: 150 })
+  @Column({ type: 'varchar', length: 150 })
   title: string;
 
   @Column({ type: 'varchar', length: 255, nullable: true })
@@ -20,19 +20,23 @@ export class Asset {
   @Column({ type: 'text', nullable: true })
   description: string | null;
 
-  @Column({ type: 'decimal', precision: 10, scale: 2, default: 0 })
+  @Column({ type: 'decimal', precision: 10, scale: 2, default: 0.0 })
   price: number;
 
   @Column({ type: 'varchar', length: 255, nullable: true })
   thumbnail_url: string | null;
 
-  @Column({ length: 255 })
+  @Column({ type: 'varchar', length: 255 })
   file_url: string;
 
   @Column({ type: 'bigint', default: 0 })
   file_size: number;
 
-  @Column({ length: 100, default: 'Standard Commercial' })
+  @Column({
+    type: 'varchar',
+    length: 100,
+    default: 'Standard Indie Commercial License',
+  })
   license: string;
 
   @Column({ type: 'int', default: 0 })
@@ -54,9 +58,9 @@ export class Asset {
   @Column({ type: 'int', nullable: true })
   category_id: number | null;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
   created_at: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ name: 'updated_at', type: 'timestamp' })
   updated_at: Date;
 }

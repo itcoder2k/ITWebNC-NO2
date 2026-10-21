@@ -13,7 +13,7 @@ export default function Navbar() {
   const handleSearch = (e) => {
     e.preventDefault();
     if (searchTerm.trim()) {
-      navigate(`/blank?search=${encodeURIComponent(searchTerm)}`);
+      navigate(`/catalog?search=${encodeURIComponent(searchTerm)}`);
     }
   };
 
@@ -55,27 +55,27 @@ export default function Navbar() {
             {/* Navigation links */}
             <ul className="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-3 gap-lg-1">
               <li className="nav-item">
-                <Link className="nav-link text-dark fw-medium px-2" to="/blank?cat=all">
+                <Link className="nav-link text-dark fw-medium px-2" to="/catalog">
                   <i className="bi bi-grid me-1 text-primary"></i> Khám phá
                 </Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link text-dark fw-medium px-2" to="/blank?cat=2d">
+                <Link className="nav-link text-dark fw-medium px-2" to="/catalog?cat=2d-game-assets">
                   2D Sprites
                 </Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link text-dark fw-medium px-2" to="/blank?cat=3d">
+                <Link className="nav-link text-dark fw-medium px-2" to="/catalog?cat=3d-models">
                   3D Models
                 </Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link text-dark fw-medium px-2" to="/blank?cat=audio">
+                <Link className="nav-link text-dark fw-medium px-2" to="/catalog?cat=audio-sfx">
                   Âm thanh
                 </Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link text-dark fw-medium px-2" to="/blank?cat=uikit">
+                <Link className="nav-link text-dark fw-medium px-2" to="/catalog?cat=gui-fonts">
                   UI Kits
                 </Link>
               </li>
