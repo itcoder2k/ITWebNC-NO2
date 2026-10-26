@@ -16,7 +16,7 @@ Hệ thống được thiết kế phân chia trách nhiệm rõ ràng theo nguy
 │  [Phía Client - React 19 SPA]      │  [Phía Server - NestJS Controllers]               │
 │  • Components, Pages, Theme System │  • *.controller.ts                                │
 │  • Axios Client & Interceptors     │  • Nhiệm vụ: Nhận HTTP Request, validate dữ liệu   │
-│  • AuthContext State Management    │    đầu vào qua DTO, điều hướng đến Service.       │
+│  • cartService & Storage Events    │    đầu vào qua DTO, điều hướng đến Service.       │
 └───────────────────────────────────────────┬────────────────────────────────────────────┘
                                             │ DTOs (Data Transfer Objects đã validate)
                                             ▼
@@ -26,7 +26,7 @@ Hệ thống được thiết kế phân chia trách nhiệm rõ ràng theo nguy
 │  [Services - *.service.ts]                                                             │
 │  • AuthService, UserService, AssetService, OrderService, ReviewService, ...            │
 │  • Nhiệm vụ: Xử lý logic nghiệp vụ, tính toán số dư, mã hóa Bcrypt, ký phát JWT,      │
-│    kiểm tra điều kiện tải file và điều phối Transaction.                               │
+│    kiểm tra quyền sở hữu tránh IDOR, điều phối Transaction ACID.                       │
 └───────────────────────────────────────────┬────────────────────────────────────────────┘
                                             │ Dependency Injection (Repository Interface)
                                             ▼
@@ -65,7 +65,7 @@ Hệ thống được thiết kế phân chia trách nhiệm rõ ràng theo nguy
     "exp": 1791878314
   }
   ```
-- **Tự động đính kèm Token phía Client:** Axios Interceptor tự động đọc token từ `localStorage` và gắn vào Header:
+- **Tự động đính kèm Token phía Client:** Axios Service tự động đọc token từ `localStorage` và gắn vào Header:
   `Authorization: Bearer <accessToken>`.
 
 ### 2.2. Phân quyền dựa trên vai trò (Role-Based Access Control - RBAC)
@@ -84,3 +84,16 @@ Trong quá trình thiết kế hệ thống bảo mật Web, việc lưu trữ T
 | **Chống XSS** | Dễ bị tấn công nếu ứng dụng có lỗ hổng XSS (chèn script đọc localStorage). | **An toàn tuyệt đối trước XSS** (JavaScript không đọc được cookie HttpOnly). |
 | **Chống CSRF** | **Miễn nhiễm với CSRF** vì trình duyệt không tự động gửi localStorage. | Cần thêm CSRF Token để chống tấn công giả mạo yêu cầu. |
 | **Chiến lược của dự án** | Sử dụng `localStorage` kết hợp vệ sinh dữ liệu nghiêm ngặt qua NestJS `ValidationPipe`, lọc bỏ mọi thẻ HTML/Script độc hại để triệt tiêu XSS. |
+
+---
+
+## 4. CÁC BIỆN PHÁP PHÒNG THỦ AN NINH NÂNG CAO (OWASP TOP 10 MITIGATION)
+
+1. **Phòng chống Mass Assignment & Leo quyền (Privilege Escalation):**
+   - Loại bỏ hoàn toàn các trường nhạy cảm (`role`, `balance`) khỏi `UpdateUserDto`.
+   - Áp dụng kỹ thuật Whitelist assignment trong `user.service.ts`, chỉ cập nhật các trường được phép (`display_name`, `bio`, `avatar_url`).
+2. **Ngăn chặn lộ lọt dữ liệu nhạy cảm (Sensitive Data Exposure):**
+   - Endpoint `GET /api/users` được khóa chặt chẽ bằng `JwtAuthGuard` + `@Roles(UserRole.ADMIN)`.
+   - Loại bỏ trường `password_hash` và thông tin số dư khỏi phản hồi công khai của hồ sơ người dùng.
+3. **Phòng thủ chống IDOR (Insecure Direct Object Reference) trong Quản lý Media:**
+   - Trong `asset-media.service.ts`, hệ thống tự động kiểm tra xem người gửi yêu cầu thêm/sửa/xóa media có thực sự là chủ sở hữu (`uploader_id`) của asset đó hay không trước khi thực thi.
