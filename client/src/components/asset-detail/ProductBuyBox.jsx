@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import { checkoutAsset, requestAssetDownload } from '../../services/assetApi';
+import { addToCart } from '../../services/cartService';
 
 function formatPrice(amount) {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-  }).format(Number(amount));
+  const num = Number(amount) || 0;
+  return `${num.toLocaleString('vi-VN')} đ`;
 }
 
 function formatDate(date) {
@@ -23,6 +22,7 @@ export default function ProductBuyBox({ asset, categoryName }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [downloadUrl, setDownloadUrl] = useState('');
   const [purchaseComplete, setPurchaseComplete] = useState(false);
+  const [addedToCart, setAddedToCart] = useState(false);
 
   const showError = (error) => {
     setMessage(
@@ -56,6 +56,15 @@ export default function ProductBuyBox({ asset, categoryName }) {
     }
   };
 
+  const handleAddToCart = () => {
+    const tip = Math.max(0, Number(payAmount) - floorPrice);
+    addToCart(asset, tip);
+    setAddedToCart(true);
+    setMessage('Đã thêm sản phẩm vào giỏ hàng thành công!');
+    setMessageType('success');
+    setTimeout(() => setAddedToCart(false), 3000);
+  };
+
   return (
     <aside className="asset-detail-card asset-detail-buybox">
       <div className="asset-detail-buybox__eyebrow">
@@ -86,39 +95,52 @@ export default function ProductBuyBox({ asset, categoryName }) {
 
       {floorPrice > 0 && !purchaseComplete && (
         <label className="asset-detail-pay-amount">
-          <span>Bạn muốn trả bao nhiêu?</span>
+          <span>Bạn muốn trả bao nhiêu? (Cơ chế Pay-What-You-Want)</span>
           <div className="input-group">
             <span className="input-group-text">₫</span>
             <input
               type="number"
               className="form-control"
               min={floorPrice}
-              step="0.01"
+              step="1000"
               value={payAmount}
               onChange={(event) => setPayAmount(event.target.value)}
               aria-describedby="asset-detail-minimum"
             />
           </div>
           <small id="asset-detail-minimum">
-            Giá quy đổi tham khảo: {formatPrice(floorPrice)}. Có thể trả cao hơn để ủng hộ creator.
+            Giá sàn tham khảo: {formatPrice(floorPrice)}. Bạn có thể trả cao hơn để ủng hộ trực tiếp creator.
           </small>
         </label>
       )}
 
-      <button
-        type="button"
-        className="btn btn-app-primary asset-detail-buybox__action"
-        onClick={handleAction}
-        disabled={isSubmitting || (floorPrice > 0 && !purchaseComplete && Number(payAmount) < floorPrice)}
-      >
-        {isSubmitting ? (
-          <><span className="spinner-border spinner-border-sm" aria-hidden="true" /> Đang xử lý...</>
-        ) : floorPrice === 0 || purchaseComplete ? (
-          <><i className="bi bi-download" aria-hidden="true" /> Tải xuống</>
-        ) : (
-          <><i className="bi bi-bag-check" aria-hidden="true" /> Mua bằng ví</>
+      <div className="d-flex flex-column gap-2 mt-3">
+        <button
+          type="button"
+          className="btn btn-app-primary w-100 py-2.5 fw-bold shadow-sm"
+          onClick={handleAction}
+          disabled={isSubmitting || (floorPrice > 0 && !purchaseComplete && Number(payAmount) < floorPrice)}
+        >
+          {isSubmitting ? (
+            <><span className="spinner-border spinner-border-sm me-2" aria-hidden="true" /> Đang xử lý...</>
+          ) : floorPrice === 0 || purchaseComplete ? (
+            <><i className="bi bi-download me-1.5" aria-hidden="true" /> Tải xuống ngay</>
+          ) : (
+            <><i className="bi bi-lightning-charge-fill me-1.5" aria-hidden="true" /> Mua ngay bằng ví ({formatPrice(payAmount)})</>
+          )}
+        </button>
+
+        {!purchaseComplete && (
+          <button
+            type="button"
+            className="btn btn-outline-info w-100 py-2 fw-semibold rounded-pill"
+            onClick={handleAddToCart}
+          >
+            <i className={`bi ${addedToCart ? 'bi-check2' : 'bi-cart-plus'} me-1.5`} aria-hidden="true" />
+            {addedToCart ? 'Đã trong giỏ hàng' : 'Thêm vào giỏ hàng'}
+          </button>
         )}
-      </button>
+      </div>
 
       {message && (
         <div className={`alert alert-${messageType} py-2 mt-3 mb-0`} role="status">
@@ -126,14 +148,14 @@ export default function ProductBuyBox({ asset, categoryName }) {
         </div>
       )}
       {downloadUrl && (
-        <a className="asset-detail-download-link" href={downloadUrl} download>
-          <i className="bi bi-file-earmark-zip" aria-hidden="true" /> Tải file tài nguyên
+        <a className="asset-detail-download-link mt-2" href={downloadUrl} download>
+          <i className="bi bi-file-earmark-zip me-1" aria-hidden="true" /> Tải file tài nguyên ({asset.title})
         </a>
       )}
 
-      <ul className="asset-detail-license">
+      <ul className="asset-detail-license mt-3">
         <li><i className="bi bi-shield-check" aria-hidden="true" /> {asset.license || 'Standard Indie Commercial License'}</li>
-        <li><i className="bi bi-infinity" aria-hidden="true" /> Truy cập lâu dài sau khi sở hữu</li>
+        <li><i className="bi bi-infinity" aria-hidden="true" /> Truy cập vĩnh viễn sau khi sở hữu</li>
         <li><i className="bi bi-box-seam" aria-hidden="true" /> Kích thước gói: {formatBytes(asset.file_size)}</li>
       </ul>
     </aside>

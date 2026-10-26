@@ -1,14 +1,48 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import UserMenuDropdown from './UserMenuDropdown';
-import CartBadge from './CartBadge';
 import AuthModal from './AuthModal';
+import CartBadge from './CartBadge';
+import UserMenuDropdown from './UserMenuDropdown';
 
 export default function Navbar() {
   const [searchTerm, setSearchTerm] = useState('');
   const [isAuthOpen, setIsAuthOpen] = useState(false);
   const [authTab, setAuthTab] = useState('login');
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    return localStorage.getItem('app-theme') === 'dark';
+  });
+  const searchInputRef = useRef(null);
   const navigate = useNavigate();
+
+  // Đồng bộ theme
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+      localStorage.setItem('app-theme', 'dark');
+    } else {
+      document.documentElement.removeAttribute('data-theme');
+      localStorage.setItem('app-theme', 'light');
+    }
+  }, [isDarkMode]);
+
+  // Phím tắt Ctrl + K / Cmd + K
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if ((e.ctrlKey || e.metaKey) && (e.key === 'k' || e.key === 'K')) {
+        e.preventDefault();
+        if (searchInputRef.current) {
+          searchInputRef.current.focus();
+          searchInputRef.current.select();
+        }
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
+  const toggleTheme = () => {
+    setIsDarkMode(prev => !prev);
+  };
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -17,103 +51,116 @@ export default function Navbar() {
     }
   };
 
-  const handleOpenAuth = (tabName) => {
-    setAuthTab(tabName);
-    setIsAuthOpen(true);
-  };
-
   return (
     <>
-      <nav className="navbar navbar-expand-lg navbar-light bg-white border-bottom border-light-subtle sticky-top py-2 shadow-sm">
-        <div className="container">
+      <header className="rn-navbar sticky-top d-flex align-items-center">
+        <div className="container-fluid px-3 px-xl-4 d-flex align-items-center justify-content-between">
           
-          {/* Brand Logo */}
-          <Link className="navbar-brand d-flex align-items-center gap-2 fw-bold" to="/">
+          {/* 1. Left: Logo GameAsset */}
+          <Link className="d-flex align-items-center gap-2.5 text-decoration-none me-2 me-xl-4 flex-shrink-0" to="/">
             <div 
-              className="bg-primary text-white rounded-3 d-flex align-items-center justify-content-center shadow-sm"
-              style={{ width: '38px', height: '38px' }}
+              className="d-flex align-items-center justify-content-center lh-1"
+              style={{ fontSize: '26px', color: 'var(--primary-color)' }}
             >
-              <i className="bi bi-controller fs-4"></i>
+              <i className="bi bi-controller"></i>
             </div>
-            <span className="fs-5 fw-bolder text-dark tracking-tight">
-              GAME<span className="text-primary">MARKET</span>
+            <span className="fs-5 fw-bold tracking-tight lh-1" style={{ color: 'var(--text-main)' }}>
+              Game<span style={{ color: 'var(--primary-color)' }}>Asset</span>
             </span>
           </Link>
 
-          {/* Toggle button for mobile */}
-          <button 
-            className="navbar-toggler border-0" 
-            type="button" 
-            data-bs-toggle="collapse" 
-            data-bs-target="#navbarContent"
-          >
-            <span className="navbar-toggler-icon"></span>
-          </button>
+          {/* 2. Middle: Navigation Links */}
+          <nav className="d-none d-lg-flex align-items-center gap-1 gap-xl-2 mx-1">
+            <Link className="rn-nav-link d-inline-flex align-items-center gap-1.5" to="/catalog">
+              <i className="bi bi-grid lh-1" style={{ color: 'var(--primary-color)' }}></i>
+              <span>Khám phá</span>
+            </Link>
+            <Link className="rn-nav-link" to="/catalog?cat=2d-game-assets">2D Sprites</Link>
+            <Link className="rn-nav-link" to="/catalog?cat=3d-models">3D Models</Link>
+            <Link className="rn-nav-link" to="/catalog?cat=audio-sfx">Âm thanh</Link>
+            <Link className="rn-nav-link" to="/catalog?cat=gui-fonts">UI Kits</Link>
+          </nav>
 
-          {/* Collapsible content */}
-          <div className="collapse navbar-collapse" id="navbarContent">
-            {/* Navigation links */}
-            <ul className="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-3 gap-lg-1">
-              <li className="nav-item">
-                <Link className="nav-link text-dark fw-medium px-2" to="/catalog">
-                  <i className="bi bi-grid me-1 text-primary"></i> Khám phá
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link className="nav-link text-dark fw-medium px-2" to="/catalog?cat=2d-game-assets">
-                  2D Sprites
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link className="nav-link text-dark fw-medium px-2" to="/catalog?cat=3d-models">
-                  3D Models
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link className="nav-link text-dark fw-medium px-2" to="/catalog?cat=audio-sfx">
-                  Âm thanh
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link className="nav-link text-dark fw-medium px-2" to="/catalog?cat=gui-fonts">
-                  UI Kits
-                </Link>
-              </li>
-            </ul>
-
-            {/* Central Search Bar */}
-            <form onSubmit={handleSearch} className="d-flex mx-lg-3 my-2 my-lg-0" style={{ minWidth: '280px', maxWidth: '420px', flex: '1' }}>
-              <div className="search-input-group-light w-100">
-                <i className="bi bi-search text-muted me-2"></i>
-                <input 
-                  type="text" 
-                  placeholder="Tìm kiếm tài nguyên, shader, âm thanh... (Ctrl + K)" 
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                />
-              </div>
-            </form>
-
-            {/* Right User actions: Upload + Cart + User/Auth */}
-            <div className="d-flex align-items-center gap-2 mt-2 mt-lg-0">
-              <Link to="/blank?action=upload" className="btn btn-outline-primary rounded-pill px-3 py-1 btn-sm fw-medium">
-                <i className="bi bi-cloud-arrow-up me-1"></i> Đăng bán Asset
-              </Link>
-              
-              <CartBadge count={3} />
-
-              <UserMenuDropdown onOpenAuth={handleOpenAuth} />
+          {/* 3. Center Search Box */}
+          <form onSubmit={handleSearch} className="d-none d-sm-block mx-2 mx-xl-3 flex-grow-1" style={{ maxWidth: '270px' }}>
+            <div className="rn-search-box d-flex align-items-center gap-2">
+              <i className="bi bi-search lh-1 text-muted"></i>
+              <input 
+                ref={searchInputRef}
+                type="text" 
+                placeholder="Tìm kiếm tài nguyên..." 
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+              <span 
+                className="badge px-1.5 py-0.5 flex-shrink-0" 
+                style={{ 
+                  backgroundColor: 'var(--card-header-bg)', 
+                  color: 'var(--text-muted)', 
+                  border: '1px solid var(--border-color)', 
+                  fontSize: '10px',
+                  cursor: 'pointer'
+                }}
+                onClick={() => searchInputRef.current?.focus()}
+                title="Bấm phím tắt Ctrl + K"
+              >
+                ctrl K
+              </span>
             </div>
+          </form>
+
+          {/* 4. Right: Cụm chức năng (Giãn cách rõ ràng với khoảng đệm an toàn 12px) */}
+          <div className="d-flex align-items-center ms-auto flex-nowrap" style={{ gap: '12px' }}>
+            
+            {/* Nút chuyển Sáng/Tối */}
+            <button 
+              className="btn-theme-toggle flex-shrink-0" 
+              onClick={toggleTheme} 
+              title={isDarkMode ? 'Chuyển sang giao diện Sáng' : 'Chuyển sang giao diện Tối'}
+              type="button"
+            >
+              <i className={`bi ${isDarkMode ? 'bi-sun-fill text-warning' : 'bi-moon-stars-fill'} lh-1`}></i>
+            </button>
+
+            {/* Nút Đăng bán Asset */}
+            <Link 
+              to="/upload" 
+              className="btn btn-sm rounded-pill px-3.5 py-1 fw-semibold d-none d-md-inline-flex align-items-center gap-1.5 text-nowrap m-0 flex-shrink-0 shadow-sm"
+              style={{ 
+                height: '38px',
+                fontSize: '13.5px', 
+                border: '1.5px solid var(--primary-color)', 
+                color: 'var(--primary-color)',
+                backgroundColor: 'transparent'
+              }}
+            >
+              <i className="bi bi-cloud-arrow-up fs-6 lh-1"></i>
+              <span>Đăng bán</span>
+            </Link>
+
+            {/* Giỏ hàng độc lập có margin an toàn */}
+            <div className="d-flex align-items-center flex-shrink-0">
+              <CartBadge count={1} />
+            </div>
+
+            {/* Cụm User Dropdown / Đăng nhập & Đăng ký */}
+            <div className="d-flex align-items-center flex-shrink-0">
+              <UserMenuDropdown onOpenAuth={(tab) => { setAuthTab(tab); setIsAuthOpen(true); }} />
+            </div>
+
           </div>
 
         </div>
-      </nav>
+      </header>
 
-      {/* Auth Modal */}
+      {/* Auth Modal kết nối Backend thật */}
       <AuthModal 
         isOpen={isAuthOpen} 
         onClose={() => setIsAuthOpen(false)} 
         initialTab={authTab}
+        onAuthSuccess={() => {
+          window.location.reload();
+        }}
       />
     </>
   );
