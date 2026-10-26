@@ -1,7 +1,7 @@
 .catalog-page {
   min-height: 100vh;
-  background: #f8fafc;
-  color: #0f172a;
+  background: var(--bg-body);
+  color: var(--text-main);
 }
 
 .catalog-main {
@@ -23,7 +23,7 @@
 }
 
 .catalog-kicker {
-  color: #0284c7;
+  color: var(--primary-color);
   font-size: 0.68rem;
   font-weight: 800;
   letter-spacing: 0.12em;
@@ -33,11 +33,12 @@
   margin: 0.35rem 0;
   font-size: clamp(1.6rem, 3vw, 2.2rem);
   font-weight: 800;
+  color: var(--text-main);
 }
 
 .catalog-heading p {
   margin: 0;
-  color: #64748b;
+  color: var(--text-muted);
 }
 
 .catalog-search {
@@ -46,14 +47,14 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.65rem 0.8rem;
-  border: 1px solid #cbd5e1;
+  border: 1px solid var(--border-color);
   border-radius: 0.65rem;
-  background: #fff;
-  color: #64748b;
+  background: var(--card-bg);
+  color: var(--text-muted);
 }
 
 .catalog-search:focus-within {
-  border-color: #0284c7;
+  border-color: var(--primary-color);
   box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.12);
 }
 
@@ -62,7 +63,7 @@
   border: 0;
   outline: 0;
   background: transparent;
-  color: #0f172a;
+  color: var(--text-main);
 }
 
 .catalog-layout {
@@ -74,15 +75,16 @@
 
 .catalog-sidebar {
   padding: 1.15rem;
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--border-color);
   border-radius: 0.9rem;
-  background: #fff;
+  background: var(--card-bg);
 }
 
 .catalog-sidebar h2 {
   margin: 0 0 0.75rem;
   font-size: 0.95rem;
   font-weight: 800;
+  color: var(--text-main);
 }
 
 .catalog-category-list {
@@ -98,22 +100,24 @@
   border: 0;
   border-radius: 0.5rem;
   background: transparent;
-  color: #475569;
+  color: var(--text-muted);
   font: inherit;
   font-size: 0.82rem;
   text-align: left;
+  transition: all 0.2s ease;
 }
 
 .catalog-category-list button:hover,
 .catalog-category-list button.is-active {
-  background: #e0f2fe;
-  color: #0369a1;
+  background: var(--bg-secondary);
+  color: var(--primary-color);
 }
 
 .catalog-filter-heading {
   margin-top: 1.3rem !important;
   padding-top: 1rem;
-  border-top: 1px solid #e2e8f0;
+  border-top: 1px solid var(--border-color);
+  color: var(--text-main);
 }
 
 .catalog-radio {
@@ -121,12 +125,12 @@
   align-items: center;
   gap: 0.55rem;
   padding: 0.4rem 0;
-  color: #475569;
+  color: var(--text-muted);
   font-size: 0.82rem;
 }
 
 .catalog-radio input {
-  accent-color: #0284c7;
+  accent-color: var(--primary-color);
 }
 
 .catalog-results {
@@ -141,10 +145,10 @@
   gap: 1rem;
   margin-bottom: 0.9rem;
   padding: 0.65rem 0.9rem;
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--border-color);
   border-radius: 0.75rem;
-  background: #fff;
-  color: #64748b;
+  background: var(--card-bg);
+  color: var(--text-muted);
   font-size: 0.8rem;
 }
 
@@ -156,10 +160,10 @@
 
 .catalog-toolbar select {
   padding: 0.4rem 1.8rem 0.4rem 0.55rem;
-  border: 1px solid #cbd5e1;
+  border: 1px solid var(--border-color);
   border-radius: 0.45rem;
-  background: #fff;
-  color: #334155;
+  background: var(--input-bg);
+  color: var(--text-main);
 }
 
 .catalog-grid {
@@ -170,9 +174,9 @@
 
 .catalog-asset-card {
   overflow: hidden;
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--border-color);
   border-radius: 0.85rem;
-  background: #fff;
+  background: var(--card-bg);
   color: inherit;
   text-decoration: none;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -180,7 +184,8 @@
 
 .catalog-asset-card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 12px 25px rgba(15, 23, 42, 0.1);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+  border-color: var(--primary-color);
   color: inherit;
 }
 
@@ -190,8 +195,8 @@
   aspect-ratio: 16 / 10;
   place-items: center;
   overflow: hidden;
-  background: #e2e8f0;
-  color: #94a3b8;
+  background: var(--bg-secondary);
+  color: var(--text-muted);
 }
 
 .catalog-asset-card__image img {
@@ -234,7 +239,7 @@
   overflow: hidden;
   min-height: 2.5em;
   margin: 0 0 0.4rem;
-  color: #0f172a;
+  color: var(--text-main);
   font-size: 0.92rem;
   font-weight: 750;
   line-height: 1.3;
@@ -247,7 +252,7 @@
   overflow: hidden;
   min-height: 2.7em;
   margin: 0 0 0.75rem;
-  color: #64748b;
+  color: var(--text-muted);
   font-size: 0.76rem;
   line-height: 1.4;
   -webkit-box-orient: vertical;
@@ -259,13 +264,13 @@
   justify-content: space-between;
   gap: 0.5rem;
   padding-top: 0.65rem;
-  border-top: 1px solid #f1f5f9;
-  color: #64748b;
+  border-top: 1px solid var(--border-color);
+  color: var(--text-muted);
   font-size: 0.72rem;
 }
 
 .catalog-asset-card__body strong {
-  color: #0369a1;
+  color: var(--primary-color);
 }
 
 .catalog-state {
@@ -276,21 +281,21 @@
   justify-content: center;
   gap: 0.6rem;
   padding: 2rem;
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--border-color);
   border-radius: 0.85rem;
-  background: #fff;
-  color: #64748b;
+  background: var(--card-bg);
+  color: var(--text-muted);
   text-align: center;
 }
 
 .catalog-state > i {
-  color: #0284c7;
+  color: var(--primary-color);
   font-size: 2.5rem;
 }
 
 .catalog-state h2 {
   margin: 0;
-  color: #0f172a;
+  color: var(--text-main);
   font-size: 1.1rem;
 }
 
@@ -309,16 +314,22 @@
   justify-content: center;
   gap: 1rem;
   margin-top: 1.2rem;
-  color: #64748b;
+  color: var(--text-muted);
   font-size: 0.85rem;
 }
 
 .catalog-pagination button {
   padding: 0.45rem 0.8rem;
-  border: 1px solid #cbd5e1;
+  border: 1px solid var(--border-color);
   border-radius: 0.45rem;
-  background: #fff;
-  color: #0369a1;
+  background: var(--card-bg);
+  color: var(--text-main);
+  transition: all 0.2s ease;
+}
+
+.catalog-pagination button:hover:not(:disabled) {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
 }
 
 .catalog-pagination button:disabled {
