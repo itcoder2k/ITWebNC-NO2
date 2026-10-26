@@ -109,14 +109,15 @@ export class UserService {
       }
     }
 
-    const { password, ...rest } = updateUserDto;
-    let password_hash = user.password_hash;
-
-    if (password) {
-      password_hash = await bcrypt.hash(password, this.saltRounds);
+    if (updateUserDto.display_name !== undefined) user.display_name = updateUserDto.display_name;
+    if (updateUserDto.bio !== undefined) user.bio = updateUserDto.bio;
+    if (updateUserDto.avatar_url !== undefined) user.avatar_url = updateUserDto.avatar_url;
+    if (updateUserDto.username !== undefined) user.username = updateUserDto.username;
+    if (updateUserDto.email !== undefined) user.email = updateUserDto.email;
+    if (updateUserDto.password) {
+      user.password_hash = await bcrypt.hash(updateUserDto.password, this.saltRounds);
     }
 
-    Object.assign(user, rest, { password_hash });
     const updatedUser = await this.userRepository.save(user);
     return this.sanitizeUser(updatedUser);
   }

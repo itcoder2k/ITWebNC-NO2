@@ -44,6 +44,8 @@ export class UserController {
   }
 
   @Get()
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.ADMIN)
   findAll(): Promise<Omit<User, 'password_hash'>[]> {
     return this.userService.findAll();
   }
@@ -96,10 +98,14 @@ export class UserController {
   }
 
   @Get(':id')
-  findOne(
+  async findOne(
     @Param('id', ParseIntPipe) id: number,
-  ): Promise<Omit<User, 'password_hash'>> {
-    return this.userService.findOne(id);
+  ): Promise<Partial<Omit<User, 'password_hash'>>> {
+    const user = await this.userService.findOne(id);
+    // Public profile view: omit sensitive financial and personal details
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { balance, email, ...publicSafeProfile } = user;
+    return publicSafeProfile;
   }
 
   @UseGuards(JwtAuthGuard)
@@ -140,4 +146,3 @@ export class UserController {
     return this.userService.remove(id);
   }
 }
-

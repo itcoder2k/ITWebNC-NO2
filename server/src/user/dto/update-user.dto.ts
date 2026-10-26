@@ -1,13 +1,10 @@
 import {
   IsEmail,
-  IsEnum,
-  IsNumber,
   IsOptional,
   IsString,
   MaxLength,
   MinLength,
 } from 'class-validator';
-import { UserRole } from '../entities/user.entity.js';
 
 export class UpdateUserDto {
   @IsString()
@@ -32,10 +29,6 @@ export class UpdateUserDto {
   @MaxLength(100)
   display_name?: string;
 
-  @IsEnum(UserRole)
-  @IsOptional()
-  role?: UserRole;
-
   @IsString()
   @IsOptional()
   @MaxLength(255)
@@ -44,8 +37,4 @@ export class UpdateUserDto {
   @IsString()
   @IsOptional()
   bio?: string;
-
-  @IsNumber()
-  @IsOptional()
-  balance?: number;
 }
