@@ -1,62 +1,110 @@
 # ĐẶC TẢ CÁC CA SỬ DỤNG (USE CASE SPECIFICATION)
 ## SÀN GIAO DỊCH TÀI NGUYÊN GAME TRỰC TUYẾN
 
-> Tài liệu này mô tả chi tiết các tác nhân (Actors) và các kịch bản sử dụng (Use Cases) của hệ thống theo chuẩn phân tích thiết kế phần mềm.
+> Tài liệu này mô tả chi tiết các tác nhân (Actors) và các kịch bản sử dụng (Use Cases) của hệ thống theo chuẩn phân tích thiết kế phần mềm UML.
 
 ---
 
 ## 1. BIỂU ĐỒ USE CASE TỔNG THỂ (UML USE CASE DIAGRAM)
 
+Biểu đồ được thiết kế theo bố cục chuẩn UML:
+* **Cột trái:** Tác nhân người dùng cuối (**👤 Khách vãng lai** và **👤 Người mua**).
+* **Cột giữa:** Khung biên giới hệ thống (**System Boundary**) chứa đầy đủ 14 Use Cases chi tiết được xếp dọc theo 4 phân hệ chức năng.
+* **Cột phải:** Tác nhân đối tác & quản trị (**👤 Nhà sáng tạo - Creator** và **👑 Quản trị viên - Admin**).
+* **Đường nối liên kết:** Thể hiện rõ ràng quyền hạn truy cập của từng tác nhân vào từng Use Case cụ thể.
+
 ```mermaid
-graph TD
-    classDef actorStyle fill:#2d3748,stroke:#4a5568,stroke-width:2px,color:#fff;
-    classDef usecaseStyle fill:#1a202c,stroke:#e53e3e,stroke-width:1.5px,color:#edf2f7;
+flowchart LR
+    classDef actorStyle fill:#1e293b,stroke:#38bdf8,stroke-width:2px,color:#f8fafc,rx:8px,ry:8px;
+    classDef adminStyle fill:#1e293b,stroke:#f59e0b,stroke-width:2px,color:#f8fafc,rx:8px,ry:8px;
+    classDef usecaseStyle fill:#0f172a,stroke:#38bdf8,stroke-width:1.5px,color:#f8fafc;
+    classDef groupStyle fill:#141e33,stroke:#26354d,stroke-width:1.5px,color:#94a3b8;
 
-    Guest["Khách vãng lai (Guest)"]:::actorStyle
-    Customer["Người mua (Buyer/Customer)"]:::actorStyle
-    Creator["Nhà sáng tạo (Creator)"]:::actorStyle
-    Admin["Quản trị viên (Admin)"]:::actorStyle
-
-    subgraph "HỆ THỐNG SÀN GIAO DỊCH TÀI NGUYÊN GAME"
-        UC1(["Xem & Tìm kiếm tài nguyên"]):::usecaseStyle
-        UC2(["Lọc đa chiều theo Tags & Category"]):::usecaseStyle
-        UC3(["Xem trước Demo Gallery (Ảnh/GIF/Audio)"]):::usecaseStyle
-        UC4(["Đăng ký / Đăng nhập (JWT)"]):::usecaseStyle
-        
-        UC5(["Nạp tiền vào ví điện tử"]):::usecaseStyle
-        UC6(["Mua tài nguyên (Ủng hộ PWYW)"]):::usecaseStyle
-        UC7(["Quản lý Thư viện cá nhân (My Library)"]):::usecaseStyle
-        UC8(["Tải tệp tin gốc an toàn (Stream File)"]):::usecaseStyle
-        UC9(["Đánh giá & Chấm sao (Verified Review)"]):::usecaseStyle
-
-        UC10(["Đăng bán tài nguyên mới (Upload File/Media)"]):::usecaseStyle
-        UC11(["Quản lý giá bán & Giấy phép bản quyền"]):::usecaseStyle
-        UC12(["Bảng điều khiển tác giả (Dashboard Doanh thu)"]):::usecaseStyle
-
-        UC13(["Quản lý Danh mục & Thẻ Tags"]):::usecaseStyle
-        UC14(["Kiểm duyệt nội dung & Quản lý người dùng"]):::usecaseStyle
+    subgraph ACTORS_LEFT [" "]
+        direction TB
+        Guest["👤<br><b>Khách vãng lai</b><br><i>(Guest)</i>"]:::actorStyle
+        Buyer["👤<br><b>Người mua</b><br><i>(Buyer / Customer)</i>"]:::actorStyle
+        Guest ~~~ Buyer
     end
 
-    Guest --> UC1
-    Guest --> UC2
-    Guest --> UC3
-    Guest --> UC4
+    subgraph SYSTEM_BOUNDARY ["📦 HỆ THỐNG SÀN GIAO DỊCH GAME ASSET"]
+        direction TB
 
-    Customer --> UC1
-    Customer --> UC2
-    Customer --> UC3
-    Customer --> UC5
-    Customer --> UC6
-    Customer --> UC7
-    Customer --> UC8
-    Customer --> UC9
+        subgraph G1 ["🔍 1. KHÁM PHÁ & ĐỊNH DANH"]
+            direction TB
+            UC1(["UC1: Xem & Tìm kiếm tài nguyên"]):::usecaseStyle
+            UC2(["UC2: Lọc theo Category & Tags"]):::usecaseStyle
+            UC3(["UC3: Xem trước Demo Gallery & Audio"]):::usecaseStyle
+            UC4(["UC4: Đăng ký / Đăng nhập (JWT)"]):::usecaseStyle
+            UC1 ~~~ UC2 ~~~ UC3 ~~~ UC4
+        end
 
-    Creator --> UC10
-    Creator --> UC11
-    Creator --> UC12
+        subgraph G2 ["🛒 2. MUA HÀNG & THƯ VIỆN"]
+            direction TB
+            UC5(["UC5: Nạp tiền vào ví điện tử"]):::usecaseStyle
+            UC6(["UC6: Mua tài nguyên (Ủng hộ PWYW)"]):::usecaseStyle
+            UC7(["UC7: Kho game của tôi (My Library)"]):::usecaseStyle
+            UC8(["UC8: Tải file gốc an toàn (.zip)"]):::usecaseStyle
+            UC9(["UC9: Đánh giá & Chấm sao (Review)"]):::usecaseStyle
+            UC5 ~~~ UC6 ~~~ UC7 ~~~ UC8 ~~~ UC9
+        end
 
-    Admin --> UC13
-    Admin --> UC14
+        subgraph G3 ["🎨 3. KÊNH NHÀ SÁNG TẠO (CREATOR)"]
+            direction TB
+            UC10(["UC10: Đăng bán tài nguyên mới"]):::usecaseStyle
+            UC11(["UC11: Quản lý giá sàn & Giấy phép"]):::usecaseStyle
+            UC12(["UC12: Dashboard thống kê doanh thu"]):::usecaseStyle
+            UC10 ~~~ UC11 ~~~ UC12
+        end
+
+        subgraph G4 ["👑 4. QUẢN TRỊ HỆ THỐNG (ADMIN)"]
+            direction TB
+            UC13(["UC13: Quản lý Danh mục & Thẻ Tags"]):::usecaseStyle
+            UC14(["UC14: Quản lý & Phân quyền User"]):::usecaseStyle
+            UC13 ~~~ UC14
+        end
+
+        G1 ~~~ G2 ~~~ G3 ~~~ G4
+    end
+
+    subgraph ACTORS_RIGHT [" "]
+        direction TB
+        Creator["👤<br><b>Nhà sáng tạo</b><br><i>(Creator)</i>"]:::actorStyle
+        Admin["👑<br><b>Quản trị viên</b><br><i>(Admin)</i>"]:::adminStyle
+        Creator ~~~ Admin
+    end
+
+    style ACTORS_LEFT fill:none,stroke:none
+    style ACTORS_RIGHT fill:none,stroke:none
+    style G1 class:groupStyle
+    style G2 class:groupStyle
+    style G3 class:groupStyle
+    style G4 class:groupStyle
+
+    %% Liên kết Khách vãng lai (Guest)
+    Guest --- UC1
+    Guest --- UC2
+    Guest --- UC3
+    Guest --- UC4
+
+    %% Liên kết Người mua (Buyer)
+    Buyer --- UC1
+    Buyer --- UC2
+    Buyer --- UC3
+    Buyer --- UC5
+    Buyer --- UC6
+    Buyer --- UC7
+    Buyer --- UC8
+    Buyer --- UC9
+
+    %% Liên kết Nhà sáng tạo (Creator)
+    UC10 --- Creator
+    UC11 --- Creator
+    UC12 --- Creator
+
+    %% Liên kết Quản trị viên (Admin)
+    UC13 --- Admin
+    UC14 --- Admin
 ```
 
 ---
