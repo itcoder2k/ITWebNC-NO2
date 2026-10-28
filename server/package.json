@@ -17,6 +17,7 @@
     "lint": "oxlint --type-aware src/ test/",
     "test": "vitest run",
     "seed": "node seed.js",
+    "postinstall": "node patch-nest-cli.js",
     "test:watch": "vitest",
     "test:cov": "vitest run --coverage",
     "test:debug": "vitest --inspect-brk --no-file-parallelism",

@@ -10,6 +10,7 @@ import {
   Patch,
   Post,
   Request,
+  Res,
   UseGuards,
 } from '@nestjs/common';
 import { AssetService } from './asset.service.js';
@@ -51,6 +52,20 @@ export class AssetController {
     @Request() req: { user: { user_id: number } },
   ) {
     return this.assetService.getDownload(id, req.user.user_id);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get(':id/download-file')
+  async downloadFile(
+    @Param('id', ParseIntPipe) id: number,
+    @Request() req: { user: { user_id: number } },
+    @Res() res: any,
+  ) {
+    const downloadInfo = await this.assetService.getDownload(
+      id,
+      req.user.user_id,
+    );
+    return this.assetService.streamZip(id, downloadInfo, res);
   }
 
   @Patch(':id')

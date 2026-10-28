@@ -2,6 +2,8 @@ import {
   Body,
   Controller,
   Get,
+  Param,
+  ParseIntPipe,
   Post,
   Request,
   UseGuards,
@@ -28,8 +30,21 @@ export class OrderController {
     return this.orderService.findMyOrders(req.user.user_id);
   }
 
+  @Get('history')
+  findHistory(@Request() req: { user: { user_id: number } }) {
+    return this.orderService.findMyOrders(req.user.user_id);
+  }
+
   @Get('my-library')
   findMyLibrary(@Request() req: { user: { user_id: number } }) {
     return this.orderService.findMyLibrary(req.user.user_id);
+  }
+
+  @Get(':id')
+  findOrderById(
+    @Param('id', ParseIntPipe) id: number,
+    @Request() req: { user: { user_id: number } },
+  ) {
+    return this.orderService.findOrderById(id, req.user.user_id);
   }
 }
