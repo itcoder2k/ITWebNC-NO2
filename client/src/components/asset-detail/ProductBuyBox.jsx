@@ -4,7 +4,7 @@ import { addToCart } from '../../services/cartService';
 
 function formatPrice(amount) {
   const num = Number(amount) || 0;
-  return `${num.toLocaleString('vi-VN')} đ`;
+  return `$${num.toFixed(2)}`;
 }
 
 function formatDate(date) {
@@ -97,12 +97,12 @@ export default function ProductBuyBox({ asset, categoryName }) {
         <label className="asset-detail-pay-amount">
           <span>Bạn muốn trả bao nhiêu? (Cơ chế Pay-What-You-Want)</span>
           <div className="input-group">
-            <span className="input-group-text">₫</span>
+            <span className="input-group-text">$</span>
             <input
               type="number"
               className="form-control"
               min={floorPrice}
-              step="1000"
+              step="0.5"
               value={payAmount}
               onChange={(event) => setPayAmount(event.target.value)}
               aria-describedby="asset-detail-minimum"

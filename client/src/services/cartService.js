@@ -1,6 +1,6 @@
 /**
  * cartService.js - Quản lý giỏ hàng tài nguyên (Shopping Cart Service)
- * Lưu trữ giỏ hàng trong localStorage, phát sự kiện 'cart-updated' đồng bộ UI
+ * Lưu trữ giỏ hàng trong localStorage, phát sự kiện 'cart-updated' đồng bộ UI toàn ứng dụng
  */
 
 const CART_STORAGE_KEY = 'user_game_cart';
@@ -20,7 +20,9 @@ export function getCartItems() {
 export function saveCartItems(items) {
   try {
     localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(items));
-    window.dispatchEvent(new CustomEvent('cart-updated', { detail: { count: items.length } }));
+    window.dispatchEvent(
+      new CustomEvent('cart-updated', { detail: { count: items.length } }),
+    );
   } catch (err) {
     console.error('Lỗi lưu giỏ hàng:', err);
   }
@@ -30,10 +32,35 @@ export function getCartCount() {
   return getCartItems().length;
 }
 
+export function isInCart(assetId) {
+  const items = getCartItems();
+  return items.some((item) => Number(item.id) === Number(assetId));
+}
+
+export function getCartTotals() {
+  const items = getCartItems();
+  const baseTotal = items.reduce(
+    (acc, item) => acc + (Number(item.price) || 0),
+    0,
+  );
+  const tipTotal = items.reduce(
+    (acc, item) => acc + (Number(item.tipAmount) || 0),
+    0,
+  );
+  return {
+    itemCount: items.length,
+    baseTotal: Number(baseTotal.toFixed(2)),
+    tipTotal: Number(tipTotal.toFixed(2)),
+    grandTotal: Number((baseTotal + tipTotal).toFixed(2)),
+  };
+}
+
 export function addToCart(asset, tipAmount = 0) {
   if (!asset || !asset.asset_id) return false;
   const items = getCartItems();
-  const existingIndex = items.findIndex((item) => Number(item.id) === Number(asset.asset_id));
+  const existingIndex = items.findIndex(
+    (item) => Number(item.id) === Number(asset.asset_id),
+  );
 
   const priceNum = Number(asset.price) || 0;
   const suggestedNum = Number(asset.suggested_price) || priceNum;
@@ -41,16 +68,22 @@ export function addToCart(asset, tipAmount = 0) {
   const cartItem = {
     id: asset.asset_id,
     title: asset.title || 'Tài nguyên Game',
-    author: asset.uploader_name || (asset.uploader_id ? `Creator #${asset.uploader_id}` : 'Indie Studio'),
+    author:
+      asset.uploader_name ||
+      asset.author_name ||
+      (asset.uploader_id ? `Creator #${asset.uploader_id}` : 'Indie Studio'),
     price: priceNum,
     suggestedPrice: suggestedNum,
-    tipAmount: Math.max(0, Number(tipAmount)),
-    thumbnail: asset.thumbnail_url || 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=300&q=80',
+    tipAmount: Math.max(0, Number(tipAmount) || 0),
+    thumbnail:
+      asset.thumbnail_url ||
+      'https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=300&q=80',
+    license: asset.license || 'Standard Commercial',
     addedAt: new Date().toISOString(),
   };
 
   if (existingIndex >= 0) {
-    // Đã có trong giỏ, cập nhật
+    // Đã có trong giỏ, cập nhật thông tin
     items[existingIndex] = { ...items[existingIndex], ...cartItem };
   } else {
     items.push(cartItem);
@@ -69,10 +102,11 @@ export function removeFromCart(assetId) {
 
 export function updateCartTip(assetId, tipAmount) {
   const items = getCartItems();
+  const validTip = Math.max(0, Number(tipAmount) || 0);
   const updated = items.map((item) =>
     Number(item.id) === Number(assetId)
-      ? { ...item, tipAmount: Math.max(0, Number(tipAmount)) }
-      : item
+      ? { ...item, tipAmount: Number(validTip.toFixed(2)) }
+      : item,
   );
   saveCartItems(updated);
   return updated;
