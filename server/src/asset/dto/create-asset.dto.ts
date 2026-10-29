@@ -1,3 +1,4 @@
+import { Type } from 'class-transformer';
 import {
   IsInt,
   IsNotEmpty,
@@ -23,6 +24,7 @@ export class CreateAssetDto {
   @IsString()
   description?: string;
 
+  @Type(() => Number)
   @IsNotEmpty()
   @IsNumber({ maxDecimalPlaces: 2 })
   @Min(0)
@@ -33,12 +35,13 @@ export class CreateAssetDto {
   @MaxLength(255)
   thumbnail_url?: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   @MaxLength(255)
-  file_url: string;
+  file_url?: string;
 
   @IsOptional()
+  @Type(() => Number)
   @IsInt()
   @Min(0)
   file_size?: number;
@@ -49,6 +52,7 @@ export class CreateAssetDto {
   license?: string;
 
   @IsOptional()
+  @Type(() => Number)
   @IsInt()
   @Min(1)
   category_id?: number;

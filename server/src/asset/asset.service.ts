@@ -109,7 +109,8 @@ export class AssetService {
     isAdmin: boolean,
   ): Promise<{ message: string }> {
     const asset = await this.getOwnedAsset(id, actorId, isAdmin);
-    await this.assetRepository.remove(asset);
+    asset.status = 'archived';
+    await this.assetRepository.save(asset);
     return { message: `Đã xóa tài nguyên #${id} thành công` };
   }
 
