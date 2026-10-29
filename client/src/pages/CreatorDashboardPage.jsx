@@ -2,12 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '../components/layout/Navbar';
 import Footer from '../components/layout/Footer';
-import { fetchAssets, getCurrentUser } from '../services/assetApi';
+import { fetchAssets, getCurrentUser, updateAsset, deleteAsset } from '../services/assetApi';
 
 export default function CreatorDashboardPage() {
   const currentUser = getCurrentUser();
   const [myAssets, setMyAssets] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [editingAsset, setEditingAsset] = useState(null);
+  const [isSaving, setIsSaving] = useState(false);
+  const [actionMessage, setActionMessage] = useState({ type: '', text: '' });
 
   useEffect(() => {
     async function loadCreatorData() {
@@ -34,6 +37,79 @@ export default function CreatorDashboardPage() {
     }
     loadCreatorData();
   }, [currentUser?.user_id]);
+
+  const reloadAssets = async () => {
+    try {
+      const allAssets = await fetchAssets();
+      if (Array.isArray(allAssets)) {
+        if (currentUser?.user_id) {
+          setMyAssets(allAssets.filter((asset) => Number(asset.uploader_id) === Number(currentUser.user_id)));
+        } else {
+          setMyAssets(allAssets.slice(0, 5));
+        }
+      }
+    } catch (error) {
+      setActionMessage({
+        type: 'danger',
+        text: error.response?.data?.message || 'Không thể tải lại danh sách tài nguyên.',
+      });
+    }
+  };
+
+  const handleEditChange = (event) => {
+    const { name, value } = event.target;
+    setEditingAsset((previous) => ({
+      ...previous,
+      [name]: name === 'price' || name === 'category_id' ? Number(value) : value,
+    }));
+  };
+
+  const handleSaveEdit = async (event) => {
+    event.preventDefault();
+    if (!editingAsset?.asset_id) return;
+
+    setIsSaving(true);
+    setActionMessage({ type: '', text: '' });
+    try {
+      await updateAsset(editingAsset.asset_id, {
+        title: editingAsset.title.trim(),
+        short_description: editingAsset.short_description?.trim() || '',
+        description: editingAsset.description?.trim() || '',
+        price: Number(editingAsset.price) || 0,
+        thumbnail_url: editingAsset.thumbnail_url?.trim() || '',
+        license: editingAsset.license || '',
+        category_id: Number(editingAsset.category_id) || undefined,
+      });
+      setEditingAsset(null);
+      setActionMessage({ type: 'success', text: 'Đã cập nhật tài nguyên thành công.' });
+      await reloadAssets();
+    } catch (error) {
+      setActionMessage({
+        type: 'danger',
+        text: error.response?.data?.message || 'Không thể cập nhật tài nguyên.',
+      });
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const handleDeleteAsset = async (asset) => {
+    if (!window.confirm(`Bạn có chắc muốn xóa tài nguyên "${asset.title}"? Hành động này không thể hoàn tác.`)) {
+      return;
+    }
+
+    setActionMessage({ type: '', text: '' });
+    try {
+      await deleteAsset(asset.asset_id);
+      setActionMessage({ type: 'success', text: 'Đã xóa tài nguyên thành công.' });
+      await reloadAssets();
+    } catch (error) {
+      setActionMessage({
+        type: 'danger',
+        text: error.response?.data?.message || 'Không thể xóa tài nguyên.',
+      });
+    }
+  };
 
   const totalDownloads = myAssets.reduce((acc, a) => acc + (Number(a.downloads_count) || 0), 0);
   const totalEstimatedEarnings = myAssets.reduce((acc, a) => {
@@ -66,6 +142,13 @@ export default function CreatorDashboardPage() {
               <i className="bi bi-plus-lg me-1"></i> Đăng Tài Nguyên Mới
             </Link>
           </div>
+
+          {actionMessage.text && (
+            <div className={`alert alert-${actionMessage.type === 'success' ? 'success' : 'danger'} rounded-3`} role="alert">
+              <i className={`bi bi-${actionMessage.type === 'success' ? 'check-circle-fill' : 'exclamation-triangle-fill'} me-2`}></i>
+              {actionMessage.text}
+            </div>
+          )}
 
           {/* 3 Thẻ Thống kê nhanh */}
           <div className="row g-3 mb-4">
@@ -152,6 +235,25 @@ export default function CreatorDashboardPage() {
                             <Link to={`/assets/${asset.asset_id}`} className="btn btn-outline-info btn-sm rounded-circle p-1" title="Xem trang">
                               <i className="bi bi-eye"></i>
                             </Link>
+                            <button
+                              type="button"
+                              className="btn btn-outline-warning btn-sm rounded-circle p-1"
+                              title="Chỉnh sửa"
+                              onClick={() => {
+                                setActionMessage({ type: '', text: '' });
+                                setEditingAsset({ ...asset });
+                              }}
+                            >
+                              <i className="bi bi-pencil"></i>
+                            </button>
+                            <button
+                              type="button"
+                              className="btn btn-outline-danger btn-sm rounded-circle p-1"
+                              title="Xóa"
+                              onClick={() => handleDeleteAsset(asset)}
+                            >
+                              <i className="bi bi-trash"></i>
+                            </button>
                           </div>
                         </td>
                       </tr>
@@ -162,6 +264,58 @@ export default function CreatorDashboardPage() {
             )}
 
           </div>
+
+          {editingAsset && (
+            <div className="modal fade show d-block" tabIndex="-1" role="dialog" style={{ backgroundColor: 'rgba(0, 0, 0, 0.55)' }}>
+              <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <form className="modal-content border-0 rounded-4 shadow" style={{ backgroundColor: 'var(--card-bg)' }} onSubmit={handleSaveEdit}>
+                  <div className="modal-header border-bottom" style={{ borderColor: 'var(--border-color)' }}>
+                    <h5 className="modal-title fw-bold" style={{ color: 'var(--text-main)' }}>Chỉnh sửa tài nguyên</h5>
+                    <button type="button" className="btn-close" aria-label="Đóng" disabled={isSaving} onClick={() => setEditingAsset(null)}></button>
+                  </div>
+                  <div className="modal-body p-4">
+                    <div className="mb-3">
+                      <label className="form-label fw-bold small">Tên tài nguyên</label>
+                      <input className="form-control" name="title" value={editingAsset.title || ''} onChange={handleEditChange} required />
+                    </div>
+                    <div className="row g-3 mb-3">
+                      <div className="col-md-6">
+                        <label className="form-label fw-bold small">Giá</label>
+                        <input className="form-control" type="number" min="0" step="0.01" name="price" value={editingAsset.price ?? 0} onChange={handleEditChange} />
+                      </div>
+                      <div className="col-md-6">
+                        <label className="form-label fw-bold small">Giấy phép</label>
+                        <select className="form-select" name="license" value={editingAsset.license || ''} onChange={handleEditChange}>
+                          <option value="">Không chọn</option>
+                          <option value="CC0 (Public Domain)">CC0 (Public Domain)</option>
+                          <option value="CC-BY 4.0 (Commercial)">CC-BY 4.0 (Commercial)</option>
+                          <option value="Standard Commercial License">Standard Commercial</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div className="mb-3">
+                      <label className="form-label fw-bold small">Link ảnh bìa</label>
+                      <input className="form-control" type="url" name="thumbnail_url" value={editingAsset.thumbnail_url || ''} onChange={handleEditChange} />
+                    </div>
+                    <div className="mb-3">
+                      <label className="form-label fw-bold small">Mô tả ngắn</label>
+                      <input className="form-control" name="short_description" value={editingAsset.short_description || ''} onChange={handleEditChange} />
+                    </div>
+                    <div>
+                      <label className="form-label fw-bold small">Mô tả chi tiết</label>
+                      <textarea className="form-control" rows="5" name="description" value={editingAsset.description || ''} onChange={handleEditChange}></textarea>
+                    </div>
+                  </div>
+                  <div className="modal-footer border-top" style={{ borderColor: 'var(--border-color)' }}>
+                    <button type="button" className="btn btn-outline-secondary rounded-pill px-4" disabled={isSaving} onClick={() => setEditingAsset(null)}>Hủy</button>
+                    <button type="submit" className="rn-btn-pill rn-btn-primary px-4" disabled={isSaving || !editingAsset.title?.trim()}>
+                      {isSaving ? 'Đang lưu...' : 'Lưu thay đổi'}
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          )}
 
         </div>
       </main>

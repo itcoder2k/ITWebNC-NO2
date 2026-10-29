@@ -17,10 +17,10 @@ export default function UploadAssetPage() {
     price: 0,
     suggested_price: 25000,
     thumbnail_url: '',
-    file_url: '',
     engine_compatibility: 'Unity, Godot, Unreal',
     license: 'CC-BY 4.0 (Commercial)',
   });
+  const [assetFile, setAssetFile] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [message, setMessage] = useState({ type: '', text: '' });
 
@@ -59,8 +59,12 @@ export default function UploadAssetPage() {
       setMessage({ type: 'danger', text: 'Vui lòng nhập tên tài nguyên.' });
       return;
     }
-    if (!formData.file_url.trim()) {
-      setMessage({ type: 'danger', text: 'Vui lòng nhập link tải file tài nguyên (URL file zip hoặc drive).' });
+    if (!assetFile) {
+      setMessage({ type: 'danger', text: 'Vui lòng chọn file tài nguyên .zip, .rar hoặc .unitypackage.' });
+      return;
+    }
+    if (assetFile.size > 200 * 1024 * 1024) {
+      setMessage({ type: 'danger', text: 'File tài nguyên vượt quá giới hạn 200 MB.' });
       return;
     }
 
@@ -68,16 +72,15 @@ export default function UploadAssetPage() {
     setMessage({ type: '', text: '' });
 
     try {
-      const payload = {
-        title: formData.title.trim(),
-        price: Number(formData.price) || 0,
-        file_url: formData.file_url.trim(),
-        short_description: formData.short_description?.trim() || undefined,
-        description: formData.description?.trim() || undefined,
-        thumbnail_url: formData.thumbnail_url?.trim() || undefined,
-        license: formData.license || 'CC-BY 4.0 (Commercial)',
-        category_id: formData.category_id ? Number(formData.category_id) : undefined,
-      };
+      const payload = new FormData();
+      payload.append('file', assetFile);
+      payload.append('title', formData.title.trim());
+      payload.append('price', String(Number(formData.price) || 0));
+      payload.append('short_description', formData.short_description?.trim() || '');
+      payload.append('description', formData.description?.trim() || '');
+      payload.append('thumbnail_url', formData.thumbnail_url?.trim() || '');
+      payload.append('license', formData.license || 'CC-BY 4.0 (Commercial)');
+      if (formData.category_id) payload.append('category_id', String(Number(formData.category_id)));
 
       const res = await createAsset(payload);
       setMessage({ 
@@ -271,20 +274,25 @@ export default function UploadAssetPage() {
                 </div>
               </div>
 
-              {/* 5. Tệp đính kèm tài nguyên (File zip / rar) */}
+              {/* 5. Tệp đính kèm tài nguyên */}
               <div className="mb-4">
                 <label className="form-label fw-bold small" style={{ color: 'var(--text-main)' }}>
-                  Đường dẫn tệp tài nguyên (.zip, .rar, .unitypackage)
+                  Tệp tài nguyên (.zip, .rar, .unitypackage) <span className="text-danger">*</span>
                 </label>
                 <input
-                  type="text"
-                  name="file_url"
+                  type="file"
+                  name="file"
+                  accept=".zip,.rar,.unitypackage"
                   className="form-control"
                   style={{ backgroundColor: 'var(--search-bg)', color: 'var(--text-main)', borderColor: 'var(--border-color)' }}
-                  placeholder="https://drive.google.com/... hoặc link tải trực tiếp"
-                  value={formData.file_url}
-                  onChange={handleChange}
+                  onChange={(event) => setAssetFile(event.target.files?.[0] || null)}
+                  required
                 />
+                {assetFile && (
+                  <div className="small text-muted mt-2">
+                    Đã chọn: {assetFile.name} · {(assetFile.size / 1024 / 1024).toFixed(2)} MB
+                  </div>
+                )}
               </div>
 
               {/* 6. Mô tả chi tiết */}

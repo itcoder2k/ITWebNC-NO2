@@ -280,7 +280,11 @@ export async function submitAssetReview(review) {
 
 /* ================= CREATOR APIS ================= */
 export async function createAsset(assetData) {
-  const { data } = await api.post('/assets', assetData, authConfig());
+  const config = authConfig();
+  if (assetData instanceof FormData) {
+    config.headers['Content-Type'] = undefined;
+  }
+  const { data } = await api.post('/assets', assetData, config);
   return data;
 }
 
