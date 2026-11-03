@@ -66,6 +66,13 @@
   color: var(--text-main);
 }
 
+.catalog-active-filters {
+  padding: 0.65rem 0.9rem;
+  background: var(--card-bg);
+  border: 1px dashed var(--border-color);
+  border-radius: 0.65rem;
+}
+
 .catalog-layout {
   display: grid;
   grid-template-columns: 250px minmax(0, 1fr);
@@ -111,6 +118,7 @@
 .catalog-category-list button.is-active {
   background: var(--bg-secondary);
   color: var(--primary-color);
+  font-weight: 600;
 }
 
 .catalog-filter-heading {
@@ -127,10 +135,34 @@
   padding: 0.4rem 0;
   color: var(--text-muted);
   font-size: 0.82rem;
+  cursor: pointer;
 }
 
 .catalog-radio input {
   accent-color: var(--primary-color);
+}
+
+.catalog-tags-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.catalog-tag-pill {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.6rem;
+  border-radius: 20px;
+  background: var(--bg-secondary);
+  color: var(--text-muted);
+  border: 1px solid var(--border-color);
+  transition: all 0.2s ease;
+}
+
+.catalog-tag-pill:hover,
+.catalog-tag-pill.is-active {
+  background: var(--primary-color);
+  color: #fff;
+  border-color: var(--primary-color);
 }
 
 .catalog-results {
@@ -179,7 +211,9 @@
   background: var(--card-bg);
   color: inherit;
   text-decoration: none;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  display: flex;
+  flex-direction: column;
 }
 
 .catalog-asset-card:hover {
@@ -230,8 +264,25 @@
   background: #059669;
 }
 
+.catalog-asset-card__category-badge {
+  position: absolute;
+  top: 0.65rem;
+  left: 0.65rem;
+  padding: 0.2rem 0.45rem;
+  border-radius: 0.35rem;
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(4px);
+  color: #e2e8f0;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
 .catalog-asset-card__body {
   padding: 0.85rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
 
 .catalog-asset-card__body h3 {
@@ -257,11 +308,13 @@
   line-height: 1.4;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
+  flex: 1;
 }
 
-.catalog-asset-card__body > div {
+.catalog-asset-card__footer {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   gap: 0.5rem;
   padding-top: 0.65rem;
   border-top: 1px solid var(--border-color);
@@ -269,7 +322,7 @@
   font-size: 0.72rem;
 }
 
-.catalog-asset-card__body strong {
+.catalog-asset-card__footer strong {
   color: var(--primary-color);
 }
 

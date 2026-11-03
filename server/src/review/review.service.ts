@@ -63,7 +63,7 @@ export class ReviewService {
     return this.reviewRepository.save(review);
   }
 
-  async findForAsset(assetId: number): Promise<Review[]> {
+  async findForAsset(assetId: number): Promise<any[]> {
     const [asset] = await this.dataSource.query(
       'SELECT asset_id FROM Assets WHERE asset_id = ?',
       [assetId],
@@ -71,10 +71,15 @@ export class ReviewService {
     if (!asset) {
       throw new NotFoundException('Không tìm thấy tài nguyên');
     }
-    return this.reviewRepository.find({
-      where: { asset_id: assetId },
-      order: { created_at: 'DESC' },
-    });
+    return this.dataSource.query(
+      `SELECT r.review_id, r.user_id, r.asset_id, r.rating, r.comment, r.created_at,
+              u.username, u.display_name, u.avatar_url
+       FROM Reviews r
+       LEFT JOIN Users u ON u.user_id = r.user_id
+       WHERE r.asset_id = ?
+       ORDER BY r.created_at DESC`,
+      [assetId],
+    );
   }
 
   async remove(

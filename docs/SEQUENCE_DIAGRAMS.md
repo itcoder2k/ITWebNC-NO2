@@ -11,10 +11,10 @@
 | :---: | :--- | :---: | :---: | :--- |
 | **1** | **Xác thực & Cấp phát JWT** | `UC4` | **Nguyễn Trọng Hùng** | Băm mật khẩu bcrypt 10 rounds, mã hóa JWT payload, đồng bộ trạng thái Client. |
 | **2** | **Nạp tiền vào ví điện tử** | `UC6` | **Nguyễn Trọng Hùng** | Xác thực `JwtAuthGuard`, kiểm tra DTO, cập nhật số dư ví trong giao dịch an toàn. |
-| **3** | **Đăng bán & Upload tài nguyên** | `UC13` | **Bùi Quốc Toản** | Kiểm tra quyền Creator, lưu trữ thông tin sản phẩm và liên kết media demo. |
-| **4** | **Thanh toán đơn hàng (PWYW Checkout)** | `UC7, UC8` | **Nguyễn Quốc Hưng** | Kiểm tra giá sàn PWYW, kiểm tra số dư ví, thực thi ACID Transaction trừ ví mua/cộng ví bán. |
-| **5** | **Tải file gốc an toàn & Chặn IDOR** | `UC11` | **Bùi Quốc Toản & Nguyễn Quốc Hưng** | Ngăn chặn truy cập tệp lậu (IDOR defense), kiểm tra quyền sở hữu trong CSDL trước khi stream file. |
-| **6** | **Đánh giá & Chấm sao xác thực** | `UC12` | **Phạm Văn Thắng** | Kiểm tra điều kiện "đã mua hàng" (Verified Review), chặn review trùng lặp, tính điểm sao trung bình. |
+| **3** | **Đăng bán & Upload tài nguyên** | `UC13` | **Vũ Quốc Toản** | Kiểm tra quyền Creator, lưu trữ thông tin sản phẩm và liên kết media demo. |
+| **4** | **Thanh toán đơn hàng (PWYW Checkout)** | `UC7, UC8` | **Nguyễn Hữu Hưng** | Kiểm tra giá sàn PWYW, kiểm tra số dư ví, thực thi ACID Transaction trừ ví mua/cộng ví bán. |
+| **5** | **Tải file gốc an toàn & Chặn IDOR** | `UC11` | **Vũ Quốc Toản & Nguyễn Hữu Hưng** | Ngăn chặn truy cập tệp lậu (IDOR defense), kiểm tra quyền sở hữu trong CSDL trước khi stream file. |
+| **6** | **Đánh giá & Chấm sao xác thực** | `UC12` | **Nguyễn Mạnh Thắng** | Kiểm tra điều kiện "đã mua hàng" (Verified Review), chặn review trùng lặp, tính điểm sao trung bình. |
 | **7** | **Quản trị & Kiểm duyệt vi phạm** | `UC17, UC18` | **Nguyễn Trọng Hùng** | Phân quyền RBAC (`RolesGuard`), gỡ bỏ sản phẩm vi phạm hoặc khóa người dùng. |
 
 ---
@@ -91,7 +91,7 @@ sequenceDiagram
 ---
 
 ## 3. LUỒNG ĐĂNG BÁN & UPLOAD TÀI NGUYÊN (ASSET & MEDIA CREATION - UC13)
-* **Thành viên phụ trách:** Bùi Quốc Toản
+* **Thành viên phụ trách:** Vũ Quốc Toản
 * **Ý nghĩa:** Cho phép Creator niêm yết sản phẩm đồ họa/âm thanh, đính kèm link tải file gốc an toàn và gallery preview.
 
 ```mermaid
@@ -134,7 +134,7 @@ sequenceDiagram
 ---
 
 ## 4. LUỒNG THANH TOÁN ĐƠN HÀNG & PWYW (PAY WHAT YOU WANT & CHECKOUT - UC7, UC8)
-* **Thành viên phụ trách:** Nguyễn Quốc Hưng
+* **Thành viên phụ trách:** Nguyễn Hữu Hưng
 * **Ý nghĩa:** Trọng tâm thương mại điện tử, áp dụng mô hình Pay What You Want và đảm bảo tính toàn vẹn số dư qua Database Transaction.
 
 ```mermaid
@@ -181,7 +181,7 @@ sequenceDiagram
 ---
 
 ## 5. LUỒNG TẢI FILE GỐC AN TOÀN & CHẶN IDOR (SECURE FILE DOWNLOAD - UC11)
-* **Thành viên phụ trách:** Bùi Quốc Toản & Nguyễn Quốc Hưng
+* **Thành viên phụ trách:** Vũ Quốc Toản & Nguyễn Hữu Hưng
 * **Ý nghĩa:** Phòng vệ lỗ hổng IDOR (Insecure Direct Object Reference) - Kiểm tra tính hợp lệ của quyền sở hữu trong CSDL trước khi cho phép tải file nén `.zip` gốc.
 
 ```mermaid
@@ -223,7 +223,7 @@ sequenceDiagram
 ---
 
 ## 6. LUỒNG ĐÁNH GIÁ & CHẤM SAO XÁC THỰC (VERIFIED REVIEW & RATING SYNC - UC12)
-* **Thành viên phụ trách:** Phạm Văn Thắng
+* **Thành viên phụ trách:** Nguyễn Mạnh Thắng
 * **Ý nghĩa:** Ngăn chặn đánh giá rác (Spam Reviews). Chỉ người dùng đã thực sự sở hữu sản phẩm qua đơn hàng mới được phép gửi review và chấm sao.
 
 ```mermaid

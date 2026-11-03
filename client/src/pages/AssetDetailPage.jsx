@@ -11,6 +11,7 @@ import {
   fetchAsset,
   fetchAssetMedia,
   fetchAssetReviews,
+  fetchAssetTags,
   fetchCategory,
   fetchRelatedAssets,
 } from '../services/assetApi';
@@ -21,8 +22,9 @@ export default function AssetDetailPage() {
   const [asset, setAsset] = useState(null);
   const [media, setMedia] = useState([]);
   const [reviews, setReviews] = useState([]);
+  const [tags, setTags] = useState([]);
   const [relatedAssets, setRelatedAssets] = useState([]);
-  const [categoryName, setCategoryName] = useState('');
+  const [category, setCategory] = useState(null);
   const [loadWarnings, setLoadWarnings] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
@@ -34,37 +36,50 @@ export default function AssetDetailPage() {
       const assetData = await fetchAsset(id);
       setAsset(assetData);
 
-      const [mediaResult, reviewResult, relatedResult, categoryResult] = await Promise.allSettled([
-        fetchAssetMedia(id),
-        fetchAssetReviews(id),
-        fetchRelatedAssets(),
-        assetData.category_id ? fetchCategory(assetData.category_id) : Promise.resolve(null),
-      ]);
+      const [mediaResult, reviewResult, tagResult, relatedResult, categoryResult] =
+        await Promise.allSettled([
+          fetchAssetMedia(id),
+          fetchAssetReviews(id),
+          fetchAssetTags(id),
+          fetchRelatedAssets(),
+          assetData.category_id ? fetchCategory(assetData.category_id) : Promise.resolve(null),
+        ]);
+
       const warnings = [];
       if (mediaResult.status === 'fulfilled') {
-        setMedia(mediaResult.value);
+        setMedia(mediaResult.value || []);
       } else {
         setMedia([]);
         warnings.push('Không tải được thư viện ảnh xem trước.');
       }
+
       if (reviewResult.status === 'fulfilled') {
-        setReviews(reviewResult.value);
+        setReviews(reviewResult.value || []);
       } else {
         setReviews([]);
         warnings.push('Không tải được danh sách đánh giá.');
       }
+
+      if (tagResult.status === 'fulfilled') {
+        setTags(tagResult.value || []);
+      } else {
+        setTags([]);
+      }
+
       if (relatedResult.status === 'fulfilled') {
-        setRelatedAssets(relatedResult.value);
+        setRelatedAssets(relatedResult.value || []);
       } else {
         setRelatedAssets([]);
         warnings.push('Không tải được tài nguyên gợi ý.');
       }
+
       if (categoryResult.status === 'fulfilled') {
-        setCategoryName(categoryResult.value?.name || '');
+        setCategory(categoryResult.value || null);
       } else {
-        setCategoryName('');
-        warnings.push('Không tải được tên danh mục.');
+        setCategory(null);
+        warnings.push('Không tải được thông tin danh mục.');
       }
+
       setLoadWarnings(warnings);
     } catch (requestError) {
       setError(
@@ -88,15 +103,30 @@ export default function AssetDetailPage() {
     ]);
   };
 
+  const handleReviewDeleted = (deletedId) => {
+    setReviews((currentReviews) =>
+      currentReviews.filter((item) => item.review_id !== deletedId),
+    );
+  };
+
   return (
     <div className="asset-detail-page">
       <Navbar />
       <main className="asset-detail-main">
         <div className="asset-detail-container">
+          {/* Breadcrumb đa tầng */}
           <nav className="asset-detail-breadcrumb" aria-label="Breadcrumb">
             <Link to="/">Trang chủ</Link>
             <i className="bi bi-chevron-right" aria-hidden="true" />
-            <span>Chi tiết tài nguyên</span>
+            <Link to="/catalog">Khám phá</Link>
+            {category && (
+              <>
+                <i className="bi bi-chevron-right" aria-hidden="true" />
+                <Link to={`/catalog?cat=${category.slug}`}>{category.name}</Link>
+              </>
+            )}
+            <i className="bi bi-chevron-right" aria-hidden="true" />
+            <span>{asset?.title || 'Chi tiết tài nguyên'}</span>
           </nav>
 
           {isLoading ? (
@@ -116,20 +146,24 @@ export default function AssetDetailPage() {
           ) : asset ? (
             <>
               {loadWarnings.length > 0 && (
-                <div className="alert alert-warning" role="status">
-                  {loadWarnings.map((warning) => <div key={warning}>{warning}</div>)}
+                <div className="alert alert-warning py-2 mb-3" role="status">
+                  {loadWarnings.map((warning) => <div key={warning} className="small">• {warning}</div>)}
                 </div>
               )}
               <div className="asset-detail-top-grid">
                 <MediaGallery asset={asset} media={media} />
-                <ProductBuyBox asset={asset} categoryName={categoryName} />
+                <ProductBuyBox asset={asset} categoryName={category?.name} />
               </div>
-              <ProductSpecTabs asset={asset} />
+
+              <ProductSpecTabs asset={asset} tags={tags} />
+
               <ReviewSection
                 assetId={asset.asset_id}
                 reviews={reviews}
                 onReviewCreated={handleReviewCreated}
+                onReviewDeleted={handleReviewDeleted}
               />
+
               <RelatedAssetsSlider
                 assets={relatedAssets}
                 currentAssetId={asset.asset_id}

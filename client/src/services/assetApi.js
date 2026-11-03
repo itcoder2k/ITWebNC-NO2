@@ -87,6 +87,53 @@ export async function fetchCategory(id) {
   return data;
 }
 
+export async function fetchCategories() {
+  const { data } = await api.get('/categories');
+  return data;
+}
+
+export async function createCategory(categoryData) {
+  const { data } = await api.post('/categories', categoryData, authConfig());
+  return data;
+}
+
+export async function updateCategory(id, categoryData) {
+  const { data } = await api.patch(`/categories/${id}`, categoryData, authConfig());
+  return data;
+}
+
+export async function deleteCategory(id) {
+  const { data } = await api.delete(`/categories/${id}`, authConfig());
+  return data;
+}
+
+/* ================= TAG & CLASSIFICATION APIS ================= */
+export async function fetchTags() {
+  const { data } = await api.get('/tags');
+  return data;
+}
+
+export async function fetchPopularTags(limit = 10) {
+  const { data } = await api.get(`/tags/popular?limit=${limit}`);
+  return data;
+}
+
+export async function fetchAssetTags(assetId) {
+  const { data } = await api.get(`/tags/asset/${assetId}`);
+  return data;
+}
+
+export async function createTag(tagData) {
+  const { data } = await api.post('/tags', tagData, authConfig());
+  return data;
+}
+
+export async function assignAssetTags(assetId, tagIds) {
+  const { data } = await api.post(`/tags/asset/${assetId}`, { tagIds }, authConfig());
+  return data;
+}
+
+/* ================= ASSET MEDIA & REVIEWS ================= */
 export async function fetchAssetMedia(id) {
   const { data } = await api.get(`/asset-media/asset/${id}`);
   return data;
@@ -97,16 +144,22 @@ export async function fetchAssetReviews(id) {
   return data;
 }
 
+export async function submitAssetReview(review) {
+  const { data } = await api.post('/reviews', review, authConfig());
+  return data;
+}
+
+export async function deleteAssetReview(reviewId) {
+  const { data } = await api.delete(`/reviews/${reviewId}`, authConfig());
+  return data;
+}
+
 export async function fetchRelatedAssets() {
   const { data } = await api.get('/assets');
   return data;
 }
 
-export async function fetchCategories() {
-  const { data } = await api.get('/categories');
-  return data;
-}
-
+/* ================= ORDERS & CHECKOUT ================= */
 export async function checkoutAsset(assetId, payAmount) {
   const { data } = await api.post(
     '/order/checkout',
@@ -273,11 +326,6 @@ export async function downloadAssetZip(assetId, assetTitle = 'game_asset', licen
   }
 }
 
-export async function submitAssetReview(review) {
-  const { data } = await api.post('/reviews', review, authConfig());
-  return data;
-}
-
 /* ================= CREATOR APIS ================= */
 export async function createAsset(assetData) {
   const config = authConfig();
@@ -334,5 +382,3 @@ export async function fetchOrderById(orderId) {
   const { data } = await api.get(`/order/${orderId}`, authConfig());
   return data;
 }
-
-

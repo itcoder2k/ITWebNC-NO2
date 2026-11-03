@@ -27,7 +27,7 @@ describe('ReviewService', () => {
       ],
     }).compile();
 
-    service = module.get(ReviewService);
+    service = module.get<ReviewService>(ReviewService);
   });
 
   it('should reject a review when the asset does not exist', async () => {
@@ -51,6 +51,35 @@ describe('ReviewService', () => {
     reviewRepository.findOneBy.mockResolvedValue({ review_id: 1, user_id: 1, asset_id: 1 });
 
     await expect(service.create(1, { asset_id: 1, rating: 5 })).rejects.toThrow(ConflictException);
+  });
+
+  it('should return reviews with user information for an asset', async () => {
+    const mockReviews = [
+      {
+        review_id: 1,
+        user_id: 5,
+        asset_id: 1,
+        rating: 5,
+        comment: 'Tuyệt đẹp!',
+        created_at: new Date(),
+        username: 'gamer_john',
+        display_name: 'John Developer',
+        avatar_url: 'https://example.com/avatar.png',
+      },
+    ];
+    dataSource.query
+      .mockResolvedValueOnce([{ asset_id: 1 }])
+      .mockResolvedValueOnce(mockReviews);
+
+    const result = await service.findForAsset(1);
+    expect(result).toEqual(mockReviews);
+    expect(result[0].username).toBe('gamer_john');
+  });
+
+  it('should throw NotFoundException when finding reviews for non-existent asset', async () => {
+    dataSource.query.mockResolvedValueOnce([]);
+
+    await expect(service.findForAsset(999)).rejects.toThrow(NotFoundException);
   });
 
   it('should allow the review owner to remove their review', async () => {

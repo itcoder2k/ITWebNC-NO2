@@ -20,31 +20,30 @@ export default function Footer() {
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
-      behavior: 'smooth'
+      behavior: 'smooth',
     });
   };
 
   return (
     <footer className="craftpix-footer pt-5 pb-4">
       <div className="container">
-        
-        {/* Banner Đăng ký nhận Asset Miễn phí hàng tuần (Phong cách CraftPix) */}
-        <div className="footer-newsletter-banner">
-          <div className="row align-items-center g-3">
-            <div className="col-12 col-lg-7">
+        {/* Banner Bản tin Game Dev */}
+        <div className="footer-newsletter-banner mb-5">
+          <div className="row align-items-center">
+            <div className="col-lg-6 mb-3 mb-lg-0">
               <div className="footer-newsletter-title">
-                <i className="bi bi-gift-fill text-warning fs-4"></i>
-                <span>Nhận Gói Game Asset Miễn Phí Mỗi Tuần!</span>
+                <i className="bi bi-envelope-paper-heart-fill me-2 text-danger"></i>
+                <span>Nhận Tài Nguyên Game Miễn Phí Mỗi Tuần</span>
               </div>
-              <p className="footer-newsletter-desc">
-                Đăng ký bản tin để nhận ngay bộ sưu tập 2D Spritesheets, 3D Low-Poly và SFX bản quyền miễn phí cùng các ưu đãi độc quyền dành cho Game Dev.
+              <p className="footer-newsletter-desc mb-0">
+                Đăng ký nhận email thông báo các gói 2D Spritesheets, 3D Low-Poly và SFX âm thanh game miễn phí độc quyền!
               </p>
             </div>
-            <div className="col-12 col-lg-5">
+            <div className="col-lg-6">
               {isSubscribed ? (
-                <div className="d-flex align-items-center gap-2 p-2 px-3 rounded-pill bg-success bg-opacity-25 border border-success text-success small fw-semibold">
-                  <i className="bi bi-check-circle-fill fs-5"></i>
-                  <span>Tuyệt vời! Gói asset quà tặng đã được gửi đến email của bạn.</span>
+                <div className="footer-subscribed-alert">
+                  <i className="bi bi-check-circle-fill text-success me-2"></i>
+                  Tuyệt vời! Chúng tôi đã gửi email xác nhận và link tải kho tài nguyên miễn phí tới hòm thư của bạn.
                 </div>
               ) : (
                 <form onSubmit={handleSubscribe} className="footer-newsletter-input-group">
@@ -57,7 +56,7 @@ export default function Footer() {
                     required
                   />
                   <button type="submit" className="footer-newsletter-btn">
-                    <i className="bi bi-send-fill me-1"></i> Nhận Quà
+                    <i className="bi bi-send-fill me-1"></i> Đăng Ký
                   </button>
                 </form>
               )}
@@ -65,82 +64,77 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* 4 Cột Chính */}
-        <div className="footer-grid">
-          
-          {/* CỘT 1: Về Marketplace (Giới thiệu ngắn & Thương hiệu) */}
+        {/* 4 Cột Liên kết chính */}
+        <div className="footer-grid mb-5">
+          {/* Cột 1: Về Sàn GameAsset */}
           <div className="footer-col">
-            <Link to="/" className="footer-brand">
+            <Link to="/" className="footer-brand mb-3 d-inline-flex align-items-center gap-2">
               <div className="footer-brand-icon">
                 <i className="bi bi-controller"></i>
               </div>
-              <div>
+              <div className="footer-brand-text">
                 <div className="footer-brand-name">
                   GAME<span className="footer-brand-highlight">MARKET</span>
                 </div>
                 <span className="footer-brand-tagline">Crafted for Indie Game Devs</span>
               </div>
             </Link>
-
             <p className="footer-about-text">
-              Nền tảng thương mại điện tử và chia sẻ tài nguyên chuyên biệt dành riêng cho cộng đồng lập trình game độc lập. Cung cấp hàng ngàn asset đồ họa 2D, mô hình 3D, âm thanh SFX và mã nguồn chuẩn tối ưu cho Unity, Godot & Unreal Engine.
+              Sàn giao dịch và phân phối tài nguyên game bản quyền hàng đầu cho lập trình viên Unity, Godot và Unreal Engine.
             </p>
-
             <div className="footer-trust-tags">
               <span className="footer-trust-tag">
-                <i className="bi bi-patch-check-fill text-info"></i> 10,000+ Assets
+                <i className="bi bi-shield-check text-success"></i> 100% Virus Free
               </span>
               <span className="footer-trust-tag">
-                <i className="bi bi-shield-check text-success"></i> 100% Commercial
+                <i className="bi bi-patch-check text-info"></i> Commercial Safe
               </span>
               <span className="footer-trust-tag">
-                <i className="bi bi-lightning-charge-fill text-warning"></i> Instant DL
+                <i className="bi bi-lightning-charge text-warning"></i> Instant Delivery
               </span>
             </div>
-
-            {/* Mạng xã hội */}
-            <div className="footer-social-links">
-              <a 
-                href="https://discord.com" 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="footer-social-btn discord" 
-                title="Discord Community"
+            <div className="footer-social-links mt-3">
+              <a
+                href="https://discord.com"
+                target="_blank"
+                rel="noreferrer"
+                className="footer-social-btn discord"
+                title="Discord Game Dev Community"
               >
                 <i className="bi bi-discord"></i>
               </a>
-              <a 
-                href="https://github.com/itcoder2k/ITWebNC-NO2" 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="footer-social-btn github" 
-                title="GitHub Repository"
+              <a
+                href="https://github.com"
+                target="_blank"
+                rel="noreferrer"
+                className="footer-social-btn github"
+                title="GitHub Repositories"
               >
                 <i className="bi bi-github"></i>
               </a>
-              <a 
-                href="https://twitter.com" 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="footer-social-btn twitter" 
-                title="Twitter / X"
+              <a
+                href="https://twitter.com"
+                target="_blank"
+                rel="noreferrer"
+                className="footer-social-btn twitter"
+                title="X / Twitter Feed"
               >
                 <i className="bi bi-twitter-x"></i>
               </a>
-              <a 
-                href="https://youtube.com" 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="footer-social-btn youtube" 
-                title="YouTube Channel"
+              <a
+                href="https://youtube.com"
+                target="_blank"
+                rel="noreferrer"
+                className="footer-social-btn youtube"
+                title="Tutorials & Speed Arts"
               >
                 <i className="bi bi-youtube"></i>
               </a>
-              <a 
-                href="https://t.me" 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="footer-social-btn telegram" 
+              <a
+                href="https://t.me"
+                target="_blank"
+                rel="noreferrer"
+                className="footer-social-btn telegram"
                 title="Telegram Channel"
               >
                 <i className="bi bi-telegram"></i>
@@ -148,203 +142,165 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* CỘT 2: Danh mục (2D, 3D, Audio, UI Kits, Free) */}
+          {/* Cột 2: Danh Mục Assets */}
           <div className="footer-col">
             <h4 className="footer-heading">Danh Mục Assets</h4>
             <ul className="footer-nav-list">
               <li className="footer-nav-item">
-                <Link to="/blank?cat=2d" className="footer-nav-link">
-                  <i className="bi bi-grid-fill"></i>
+                <Link to="/catalog?cat=2d-game-assets" className="footer-nav-link">
                   <span>2D Sprites & Tilesets</span>
                   <span className="footer-badge badge-hot">HOT</span>
                 </Link>
               </li>
               <li className="footer-nav-item">
-                <Link to="/blank?cat=3d" className="footer-nav-link">
-                  <i className="bi bi-box-fill"></i>
-                  <span>3D Models & Low-Poly</span>
+                <Link to="/catalog?cat=3d-models" className="footer-nav-link">
+                  <span>3D Models & Low Poly</span>
                   <span className="footer-badge badge-pbr">PBR</span>
                 </Link>
               </li>
               <li className="footer-nav-item">
-                <Link to="/blank?cat=audio" className="footer-nav-link">
-                  <i className="bi bi-music-note-beamed"></i>
-                  <span>Âm thanh & SFX Nhạc nền</span>
+                <Link to="/catalog?cat=audio-sfx" className="footer-nav-link">
+                  <span>Âm Thanh & Nhạc BGM</span>
                 </Link>
               </li>
               <li className="footer-nav-item">
-                <Link to="/blank?cat=uikit" className="footer-nav-link">
-                  <i className="bi bi-window-stack"></i>
-                  <span>Game UI Kits & HUD</span>
+                <Link to="/catalog?cat=gui-fonts" className="footer-nav-link">
+                  <span>Game GUI & HUD Fonts</span>
                 </Link>
               </li>
               <li className="footer-nav-item">
-                <Link to="/blank?cat=vfx" className="footer-nav-link">
-                  <i className="bi bi-stars"></i>
-                  <span>VFX & Spine Animations</span>
+                <Link to="/catalog?cat=visual-effects" className="footer-nav-link">
+                  <span>Visual Effects (VFX 2D/3D)</span>
                 </Link>
               </li>
               <li className="footer-nav-item">
-                <Link to="/blank?cat=free" className="footer-nav-link">
-                  <i className="bi bi-gift-fill text-success"></i>
-                  <span className="fw-semibold text-white">Tài nguyên Miễn phí</span>
+                <Link to="/catalog?cat=free" className="footer-nav-link">
+                  <span>Kho Tài Nguyên Miễn Phí</span>
                   <span className="footer-badge badge-free">FREE</span>
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* CỘT 3: Cộng đồng Dev (Discord, GitHub, Forum, Bán tài nguyên) */}
+          {/* Cột 3: Cộng Đồng Dev */}
           <div className="footer-col">
             <h4 className="footer-heading">Cộng Đồng Dev</h4>
             <ul className="footer-nav-list">
               <li className="footer-nav-item">
-                <a 
-                  href="https://discord.com" 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
+                <a
+                  href="https://discord.com"
+                  target="_blank"
+                  rel="noreferrer"
                   className="footer-nav-link"
                 >
-                  <i className="bi bi-discord text-primary"></i>
-                  <span>Máy chủ Discord Devs</span>
+                  <span>Cộng đồng Discord</span>
                   <span className="footer-badge badge-dev">15K+</span>
                 </a>
               </li>
               <li className="footer-nav-item">
-                <a 
-                  href="https://github.com/itcoder2k/ITWebNC-NO2" 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
+                <a
+                  href="https://github.com/itcoder2k/ITWebNC-NO2"
+                  target="_blank"
+                  rel="noreferrer"
                   className="footer-nav-link"
                 >
-                  <i className="bi bi-github"></i>
-                  <span>Kho mã nguồn GitHub</span>
+                  <span>Mã nguồn GitHub</span>
                 </a>
               </li>
               <li className="footer-nav-item">
-                <Link to="/blank?p=forum" className="footer-nav-link">
-                  <i className="bi bi-chat-square-quote-fill"></i>
-                  <span>Diễn đàn Dev & Q&A</span>
+                <Link to="/blank?topic=forum" className="footer-nav-link">
+                  <span>Diễn đàn Indie Game Dev</span>
                 </Link>
               </li>
               <li className="footer-nav-item">
-                <Link to="/blank?p=creator-guide" className="footer-nav-link">
-                  <i className="bi bi-shop"></i>
-                  <span>Đăng ký Bán Asset (0% Phí)</span>
+                <Link to="/blank?topic=showcase" className="footer-nav-link">
+                  <span>Showcase Game nổi bật</span>
                 </Link>
               </li>
               <li className="footer-nav-item">
-                <Link to="/blank?p=pwyw" className="footer-nav-link">
-                  <i className="bi bi-heart-fill text-danger"></i>
-                  <span>Cơ chế Trả-Tùy-Tâm (PWYW)</span>
-                </Link>
-              </li>
-              <li className="footer-nav-item">
-                <Link to="/blank?p=showcase" className="footer-nav-link">
-                  <i className="bi bi-display"></i>
-                  <span>Showcase Game Indie</span>
+                <Link to="/blank?topic=contribute" className="footer-nav-link">
+                  <span>Chính sách Pay-What-You-Want</span>
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* CỘT 4: Bản quyền & Pháp lý (Quy định bản quyền, liên hệ) */}
+          {/* Cột 4: Bản Quyền & Pháp Lý */}
           <div className="footer-col">
             <h4 className="footer-heading">Bản Quyền & Pháp Lý</h4>
             <ul className="footer-nav-list">
               <li className="footer-nav-item">
-                <Link to="/blank?p=license" className="footer-nav-link">
-                  <i className="bi bi-file-earmark-check-fill"></i>
-                  <span>Quy định Giấy phép Bản quyền</span>
+                <Link to="/blank?topic=terms" className="footer-nav-link">
+                  <span>Giấy phép Standard License</span>
                 </Link>
               </li>
               <li className="footer-nav-item">
-                <Link to="/blank?p=commercial" className="footer-nav-link">
-                  <i className="bi bi-briefcase-fill"></i>
-                  <span>Quyền sử dụng Thương mại</span>
+                <Link to="/blank?topic=terms" className="footer-nav-link">
+                  <span>Sử dụng thương mại (Commercial)</span>
                 </Link>
               </li>
               <li className="footer-nav-item">
-                <Link to="/blank?p=dmca" className="footer-nav-link">
-                  <i className="bi bi-shield-lock-fill"></i>
-                  <span>Báo cáo Vi phạm DMCA</span>
+                <Link to="/blank?topic=conduct" className="footer-nav-link">
+                  <span>Chính sách bản quyền DMCA</span>
                 </Link>
               </li>
               <li className="footer-nav-item">
-                <Link to="/blank?p=terms" className="footer-nav-link">
-                  <i className="bi bi-journal-text"></i>
-                  <span>Điều khoản dịch vụ & Hoàn tiền</span>
+                <Link to="/blank?topic=terms" className="footer-nav-link">
+                  <span>Điều khoản dịch vụ sàn</span>
                 </Link>
               </li>
               <li className="footer-nav-item">
-                <Link to="/blank?p=privacy" className="footer-nav-link">
-                  <i className="bi bi-incognito"></i>
-                  <span>Chính sách bảo mật GDPR</span>
+                <Link to="/blank?topic=privacy" className="footer-nav-link">
+                  <span>Chính sách quyền riêng tư</span>
                 </Link>
               </li>
             </ul>
 
-            {/* Hộp liên hệ hỗ trợ trực tiếp */}
-            <div className="footer-contact-box">
+            <div className="footer-contact-box mt-3">
               <div className="footer-contact-item">
-                <i className="bi bi-envelope-at-fill"></i>
-                <div>
-                  <span className="d-block text-muted small">Hỗ trợ kỹ thuật & Bản quyền:</span>
-                  <a href="mailto:support@gameasset.vn">support@gameasset.vn</a>
-                </div>
+                <i className="bi bi-geo-alt-fill text-danger me-2"></i>
+                <span>Trường Đại học Phenikaa, Yên Nghĩa, Hà Đông, Hà Nội</span>
               </div>
               <div className="footer-contact-item">
-                <i className="bi bi-clock-history"></i>
-                <div>
-                  <span className="d-block text-muted small">Phản hồi 24/7 cho Creators</span>
-                </div>
+                <i className="bi bi-people-fill text-primary me-2"></i>
+                <span>Đồ án nhóm: ITWebNC-NO2</span>
               </div>
             </div>
           </div>
-
         </div>
 
-        {/* Chân trang đáy: Bản quyền, Đồ án, Phương thức thanh toán & Nút cuộn lên */}
+        {/* Chân trang đáy */}
         <div className="footer-bottom">
           <div className="footer-bottom-info">
             <div className="footer-bottom-copy">
-              © {new Date().getFullYear()} <strong>GAMEASSET MARKETPLACE</strong>. Tất cả quyền được bảo lưu.
+              © {new Date().getFullYear()} GameAsset Marketplace. Nhóm 02 — Thiết Kế Web Nâng Cao.
             </div>
             <div className="footer-bottom-project">
-              Đồ án môn: <strong>Thiết Kế Web Nâng Cao</strong> — Nhóm <strong>ITWebNC-NO2</strong> (Đại học Phenikaa).
+              Khoa Công nghệ Thông tin • Trường Đại học Phenikaa. Giảng viên hướng dẫn: ThS. Nguyễn Lệ Thu.
             </div>
           </div>
-
           <div className="footer-bottom-actions">
-            {/* Phương thức thanh toán & bảo mật */}
             <div className="footer-payment-badges">
               <span className="footer-payment-badge" title="Visa / Mastercard">
-                <i className="bi bi-credit-card-2-front-fill text-light"></i> VISA
-              </span>
-              <span className="footer-payment-badge" title="PayPal Global">
-                <i className="bi bi-paypal text-primary"></i> PayPal
+                <i className="bi bi-credit-card-2-front"></i> VISA / MASTER
               </span>
               <span className="footer-payment-badge" title="Ví nội bộ hệ thống">
-                <i className="bi bi-wallet2 text-success"></i> GameWallet
+                <i className="bi bi-wallet2"></i> VÍ NỘI BỘ
               </span>
               <span className="footer-payment-badge" title="Mã hóa SSL 256-bit an toàn tuyệt đối">
-                <i className="bi bi-lock-fill text-warning"></i> SSL 256-Bit
+                <i className="bi bi-shield-lock-fill text-success"></i> SSL 256-BIT
               </span>
             </div>
-
-            {/* Nút Cuộn lên đầu trang */}
-            <button 
-              type="button" 
-              onClick={scrollToTop} 
+            <button
+              type="button"
+              onClick={scrollToTop}
               className="footer-scroll-top"
               title="Cuộn lên đầu trang"
             >
-              <i className="bi bi-arrow-up-short fs-5"></i>
-              <span>Lên đầu trang</span>
+              <i className="bi bi-arrow-up"></i>
             </button>
           </div>
         </div>
-
       </div>
     </footer>
   );
